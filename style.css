@@ -1,0 +1,24 @@
+body{
+	background-color: #E6D6B1;
+}
+
+h2 {
+	background-color: #A18E62;
+	border-style: outset;
+	border-color: #534B38;
+	color: #421005;
+	text-align: center;
+}
+
+img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
+div {
+	border-style: solid;
+	border-color: #534B38;
+	font-style:  italic;
+}
