@@ -15,7 +15,7 @@ import React from 'react';
 
 import ClayCard from './Card';
 
-interface IProps extends React.BaseHTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.BaseHTMLAttributes<HTMLDivElement> {
 	/**
 	 * List of actions in the dropdown menu
 	 */
@@ -110,7 +110,7 @@ interface IProps extends React.BaseHTMLAttributes<HTMLDivElement> {
 	title: string;
 }
 
-export const ClayCardWithInfo: React.FunctionComponent<IProps> = ({
+export const ClayCardWithInfo = ({
 	actions,
 	checkboxProps = {},
 	description,

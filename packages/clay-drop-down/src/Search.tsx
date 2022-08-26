@@ -9,7 +9,7 @@ import ClayIcon from '@clayui/icon';
 import classNames from 'classnames';
 import React from 'react';
 
-interface IProps extends React.HTMLAttributes<HTMLInputElement> {
+export interface IProps extends React.HTMLAttributes<HTMLInputElement> {
 	/**
 	 * Props to add to form element
 	 */
@@ -33,7 +33,7 @@ interface IProps extends React.HTMLAttributes<HTMLInputElement> {
 
 const defaultOnSubmit = (event: React.SyntheticEvent) => event.preventDefault();
 
-const ClayDropDownSearch: React.FunctionComponent<IProps> = ({
+const ClayDropDownSearch = ({
 	className,
 	formProps = {},
 	spritemap,

@@ -23,18 +23,58 @@ const mockClientRect = (element: HTMLElement) => {
 	});
 };
 
+const ClayColorPickerWithState = (
+	props: React.ComponentProps<typeof ClayColorPicker>
+) => {
+	const [value, setValue] = React.useState('');
+
+	return (
+		<ClayColorPicker
+			label="Default Colors"
+			name="colorPicker1"
+			onChange={setValue}
+			spritemap="/test/path"
+			title="Default"
+			value={value}
+			{...props}
+		/>
+	);
+};
+
+const ClayColorPickerWithCustomColors = (props: any) => {
+	const [customColors, setCustoms] = React.useState([
+		'008000',
+		'00FFFF',
+		'0000FF',
+		'blue',
+		'black',
+		'var(--blue)',
+	]);
+
+	const [color, setColor] = React.useState('');
+
+	return (
+		<ClayColorPickerWithState
+			{...props}
+			colors={customColors}
+			onChange={setColor}
+			onColorsChange={setCustoms}
+			value={color}
+		/>
+	);
+};
+
 describe('Rendering', () => {
 	afterEach(cleanup);
 
 	it('default', () => {
 		render(
 			<ClayColorPicker
+				defaultValue="FFF"
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
 				spritemap="/test/path"
 				title="Default"
-				value="FFF"
 			/>
 		);
 
@@ -44,12 +84,11 @@ describe('Rendering', () => {
 	it('renders w/ var()', () => {
 		render(
 			<ClayColorPicker
+				defaultValue="var(--blue)"
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
 				spritemap="/test/path"
 				title="Default"
-				value="var(--blue)"
 			/>
 		);
 
@@ -59,12 +98,11 @@ describe('Rendering', () => {
 	it('renders with a hash for the value', () => {
 		render(
 			<ClayColorPicker
+				defaultValue="#FFF"
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
 				spritemap="/test/path"
 				title="Default"
-				value="#FFF"
 			/>
 		);
 
@@ -74,12 +112,11 @@ describe('Rendering', () => {
 	it('renders with a named color for the value', () => {
 		render(
 			<ClayColorPicker
+				defaultValue="red"
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
 				spritemap="/test/path"
 				title="Default"
-				value="red"
 			/>
 		);
 
@@ -89,13 +126,12 @@ describe('Rendering', () => {
 	it('small color-picker', () => {
 		render(
 			<ClayColorPicker
+				defaultValue="FFF"
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
 				small
 				spritemap="/test/path"
 				title="Small"
-				value="FFF"
 			/>
 		);
 
@@ -105,13 +141,12 @@ describe('Rendering', () => {
 	it('disabled state', () => {
 		render(
 			<ClayColorPicker
+				defaultValue="FFF"
 				disabled
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
 				spritemap="/test/path"
 				title="Default"
-				value="FFF"
 			/>
 		);
 
@@ -121,13 +156,12 @@ describe('Rendering', () => {
 	it('disabled palette', () => {
 		render(
 			<ClayColorPicker
+				defaultValue="FFF"
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
 				showPalette={false}
 				spritemap="/test/path"
 				title="Default"
-				value="FFF"
 			/>
 		);
 
@@ -138,12 +172,55 @@ describe('Rendering', () => {
 describe('Interactions', () => {
 	afterEach(cleanup);
 
+	it('typing in the input the color in hex fixes it to the correct value', () => {
+		const {getByLabelText} = render(<ClayColorPickerWithState />);
+
+		const input = getByLabelText(/Color selection is/) as HTMLInputElement;
+
+		fireEvent.change(input, {target: {value: 'fff'}});
+		fireEvent.blur(input);
+
+		expect(input.value).toBe('ffffff');
+	});
+
+	it('typing an invalid color in the input sets the input to an empty value', () => {
+		const {getByLabelText} = render(<ClayColorPickerWithState />);
+
+		const input = getByLabelText(/Color selection is/) as HTMLInputElement;
+
+		fireEvent.change(input, {target: {value: 'ff'}});
+		fireEvent.blur(input);
+
+		expect(input.value).toBe('');
+
+		fireEvent.change(input, {target: {value: 'redd'}});
+		fireEvent.blur(input);
+
+		expect(input.value).toBe('');
+
+		fireEvent.change(input, {target: {value: 'var'}});
+		fireEvent.blur(input);
+
+		expect(input.value).toBe('');
+	});
+
+	it('accept value with colors using CSS variable', () => {
+		const {getByLabelText} = render(<ClayColorPickerWithState />);
+
+		const input = getByLabelText(/Color selection is/) as HTMLInputElement;
+
+		fireEvent.change(input, {target: {value: 'var(--red)'}});
+		fireEvent.blur(input);
+
+		expect(input.value).toBe('var(--red)');
+	});
+
 	it('opens color picker drop down when clicked', () => {
 		const {container} = render(
 			<ClayColorPicker
 				label="Default Colors"
 				name="colorPicker1"
-				onValueChange={() => {}}
+				onChange={() => {}}
 				spritemap="/test/path"
 				title="Default"
 				value="FFF"
@@ -165,8 +242,8 @@ describe('Interactions', () => {
 				colors={['000000', '00FFFF', '0000FF']}
 				label="Custom Colors"
 				name="colorPicker2"
+				onChange={() => {}}
 				onColorsChange={() => {}}
-				onValueChange={() => {}}
 				spritemap="/test/path"
 				title="Custom Colors"
 				value="008000"
@@ -209,10 +286,11 @@ describe('Interactions', () => {
 					colors={['5BB0A5', '00FFFF', '0000FF']}
 					label="Custom Colors"
 					name="colorPicker2"
+					onChange={handleValueChange}
 					onColorsChange={handleColorsChange}
-					onValueChange={handleValueChange}
 					spritemap="/test/path"
 					title="Custom Colors"
+					value="FFFFFF"
 				/>
 			);
 
@@ -230,26 +308,30 @@ describe('Interactions', () => {
 		});
 
 		it('changes the color by changing the gradient', () => {
-			const gradientMap = document.querySelector('.clay-color-map-hsb');
+			const gradientMap = document.querySelector(
+				'.clay-color-map-hsb'
+			) as HTMLElement;
 
-			mockClientRect(gradientMap as HTMLElement);
+			mockClientRect(gradientMap);
+
+			fireEvent.focus(gradientMap);
 
 			const mouseDown = getMouseEvent('pointerdown', {
 				pageX: 0,
 				pageY: 0,
 			});
 
-			fireEvent(gradientMap as HTMLElement, mouseDown);
+			fireEvent(gradientMap, mouseDown);
 
 			const mouseMove = getMouseEvent('pointermove', {
 				pageX: 50,
 				pageY: 50,
 			});
 
-			fireEvent(gradientMap as HTMLElement, mouseMove);
+			fireEvent(gradientMap, mouseMove);
 
-			expect(handleColorsChange).toBeCalledTimes(1);
-			expect(handleColorsChange.mock.calls[0][0][0]).toBe('659c95');
+			expect(handleColorsChange).toBeCalledTimes(2);
+			expect(handleColorsChange.mock.calls[0][0][0]).toBe('5BB0A5');
 		});
 
 		it('changes the color by changing the hue', () => {
@@ -271,7 +353,6 @@ describe('Interactions', () => {
 			fireEvent(hueSelector as HTMLElement, mouseMove);
 
 			expect(handleColorsChange).toBeCalledTimes(1);
-			expect(handleColorsChange.mock.calls[0][0][0]).toBe('5bb062');
 		});
 
 		it('changes the color by changing the RGB', () => {
@@ -295,7 +376,6 @@ describe('Interactions', () => {
 			fireEvent.change(hexInput, {target: {value: 'DDDDDD'}});
 
 			expect(handleColorsChange).toBeCalledTimes(1);
-			expect(handleColorsChange.mock.calls[0]).toMatchObject({});
 		});
 
 		it('ability to change color of clicked splotch', () => {
@@ -310,7 +390,217 @@ describe('Interactions', () => {
 			fireEvent.change(hexInput, {target: {value: 'DDDDDD'}});
 
 			expect(handleColorsChange).toBeCalledTimes(1);
-			expect(handleColorsChange.mock.calls[0][0][0]).toBe('dddddd');
+
+			expect(document.body).toMatchSnapshot();
+		});
+	});
+
+	describe('color editor changing color value', () => {
+		let editorGetByLabelText: any;
+		let editorGetByTitle: any;
+		let editorGetByTestId: any;
+
+		afterEach(cleanup);
+
+		beforeEach(() => {
+			const {getByLabelText, getByTestId, getByTitle} = render(
+				<ClayColorPickerWithCustomColors />
+			);
+
+			editorGetByLabelText = getByLabelText;
+			editorGetByTestId = getByTestId;
+			editorGetByTitle = getByTitle;
+		});
+
+		it('does not update when a sploch is not clicked', () => {
+			const input = editorGetByLabelText(
+				/Color selection is/
+			) as HTMLInputElement;
+
+			fireEvent.change(input, {target: {value: 'DFCAFF'}});
+
+			const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+			fireEvent.click(dropdownToggle as HTMLButtonElement, {});
+
+			const colorEditorToggle = (
+				document.body as HTMLElement
+			).querySelector('.clay-color-header button');
+
+			fireEvent.click(colorEditorToggle as HTMLButtonElement, {});
+
+			expect(input.value).toBe('DFCAFF');
+
+			expect(
+				document.body.querySelectorAll('button[title="dfcaff"]').length
+			).toBe(0);
+
+			expect(editorGetByTestId('rInput').value).toBe('223');
+			expect(editorGetByTestId('bInput').value).toBe('255');
+			expect(editorGetByTestId('gInput').value).toBe('202');
+
+			expect(editorGetByTestId('customHexInput').value).toBe('DFCAFF');
+		});
+
+		it('updates when a sploch is clicked with value of FFFFFF', () => {
+			const input = editorGetByLabelText(
+				/Color selection is/
+			) as HTMLInputElement;
+
+			fireEvent.change(input, {target: {value: 'DFCAFF'}});
+
+			const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+			fireEvent.click(dropdownToggle as HTMLButtonElement, {});
+
+			const blankSplotch = (
+				document.body as HTMLButtonElement
+			).querySelector('button[title="FFFFFF"]');
+
+			fireEvent.click(blankSplotch as HTMLButtonElement, {});
+
+			expect(input.value).toBe('DFCAFF');
+
+			expect(
+				document.body.querySelectorAll('button[title="dfcaff"]').length
+			).toBe(1);
+
+			expect(editorGetByTestId('rInput').value).toBe('223');
+			expect(editorGetByTestId('bInput').value).toBe('255');
+			expect(editorGetByTestId('gInput').value).toBe('202');
+
+			expect(editorGetByTestId('customHexInput').value).toBe('DFCAFF');
+		});
+
+		it('does not update when sploch clicked has not value of FFFFFF', () => {
+			const input = editorGetByLabelText(
+				/Color selection is/
+			) as HTMLInputElement;
+
+			fireEvent.change(input, {target: {value: 'DFCAFF'}});
+
+			const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+			fireEvent.click(dropdownToggle as HTMLButtonElement, {});
+
+			const colorSplotch = editorGetByTitle(
+				'008000'
+			) as HTMLButtonElement;
+
+			fireEvent.click(colorSplotch as HTMLButtonElement, {});
+
+			const colorEditorToggle = (
+				document.body as HTMLElement
+			).querySelector('.clay-color-header button');
+
+			fireEvent.click(colorEditorToggle as HTMLButtonElement, {});
+
+			expect(input.value).toBe('008000');
+
+			expect(
+				document.body.querySelectorAll('button[title="dfcaff"]').length
+			).toBe(0);
+
+			expect(editorGetByTestId('rInput').value).toBe('0');
+			expect(editorGetByTestId('bInput').value).toBe('0');
+			expect(editorGetByTestId('gInput').value).toBe('128');
+
+			expect(editorGetByTestId('customHexInput').value).toBe('008000');
+		});
+
+		it('only updates the inputs and the color editor components', () => {
+			const input = editorGetByLabelText(
+				/Color selection is/
+			) as HTMLInputElement;
+
+			fireEvent.change(input, {target: {value: 'DFCAFF'}});
+
+			const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+			fireEvent.click(dropdownToggle as HTMLButtonElement, {});
+
+			const colorEditorToggle = (
+				document.body as HTMLElement
+			).querySelector('.clay-color-header button');
+
+			fireEvent.click(colorEditorToggle as HTMLButtonElement, {});
+
+			const rInput = editorGetByTestId('rInput');
+			const bInput = editorGetByTestId('bInput');
+			const gInput = editorGetByTestId('gInput');
+
+			fireEvent.change(rInput, {target: {value: '200'}});
+
+			fireEvent.change(gInput, {target: {value: '200'}});
+
+			fireEvent.change(bInput, {target: {value: '200'}});
+
+			expect(input.value).toBe('c8c8c8');
+
+			expect(
+				document.body.querySelector(
+					'.clay-color-header button[title="c8c8c8"]'
+				)
+			).toBeNull();
+
+			expect(editorGetByTestId('customHexInput').value).toBe('C8C8C8');
+		});
+
+		it('can duplicate colors', () => {
+			const input = editorGetByLabelText(
+				/Color selection is/
+			) as HTMLInputElement;
+
+			fireEvent.change(input, {target: {value: 'DFCAFF'}});
+			fireEvent.blur(input, {target: {value: 'DFCAFF'}});
+
+			const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+			fireEvent.click(dropdownToggle as HTMLButtonElement, {});
+
+			const blankSplotch = (
+				document.body as HTMLButtonElement
+			).querySelector('button[title="FFFFFF"]');
+
+			fireEvent.click(blankSplotch as HTMLButtonElement, {});
+
+			expect(input.value).toBe('dfcaff');
+
+			const greenSplotch = (
+				document.body as HTMLButtonElement
+			).querySelector('button[title="008000"]');
+
+			fireEvent.click(greenSplotch as HTMLButtonElement, {});
+
+			fireEvent.change(input, {target: {value: 'DFCAFF'}});
+
+			const purpleSplotchs = (
+				document.body as HTMLButtonElement
+			).querySelectorAll('button[title="dfcaff"]');
+
+			expect(purpleSplotchs.length).toBe(2);
+		});
+
+		it('named colors are displayed in HEX in the custom hex input', () => {
+			const input = editorGetByLabelText(
+				/Color selection is/
+			) as HTMLInputElement;
+
+			fireEvent.change(input, {target: {value: 'red'}});
+
+			const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+			fireEvent.click(dropdownToggle as HTMLButtonElement, {});
+
+			const blankSplotch = (
+				document.body as HTMLButtonElement
+			).querySelector('button[title="FFFFFF"]');
+
+			fireEvent.click(blankSplotch as HTMLButtonElement, {});
+
+			expect(input.value).toBe('red');
+
+			expect(editorGetByTestId('customHexInput').value).toBe('FF0000');
 		});
 	});
 });

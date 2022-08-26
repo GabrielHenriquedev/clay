@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.70.0](https://github.com/liferay/clay/compare/v3.69.0...v3.70.0) (2022-08-23)
+
+**Note:** Version bump only for package @clayui/form
+
+# [3.69.0](https://github.com/liferay/clay/compare/v3.68.0...v3.69.0) (2022-08-16)
+
+**Note:** Version bump only for package @clayui/form
+
+# [3.67.0](https://github.com/liferay/clay/compare/v3.66.0...v3.67.0) (2022-07-25)
+
+**Note:** Version bump only for package @clayui/form
+
+# [3.65.0](https://github.com/liferay/clay/compare/v3.64.0...v3.65.0) (2022-07-11)
+
+**Note:** Version bump only for package @clayui/form
+
+# [3.58.0](https://github.com/liferay/clay/compare/v3.57.0...v3.58.0) (2022-05-23)
+
+**Note:** Version bump only for package @clayui/form
+
+# [3.56.0](https://github.com/liferay/clay/compare/v3.55.0...v3.56.0) (2022-05-09)
+
+### Bug Fixes
+
+-   updates broken storybook links in documentation ([22fc1c6](https://github.com/liferay/clay/commit/22fc1c684a92ada9aac73c9c7090c6cbca960f9d))
+
+# [3.55.0](https://github.com/liferay/clay/compare/v3.54.0...v3.55.0) (2022-05-02)
+
+### Features
+
+-   **@clayui/form:** standardize the controlled and uncontrolled ClayRadioGroup component behavior to `value` prop ([478c5ae](https://github.com/liferay/clay/commit/478c5ae598b864a90e127c61373511993d9fc1e5))
+
+# [3.52.0](https://github.com/liferay/clay/compare/v3.51.0...v3.52.0) (2022-04-04)
+
+**Note:** Version bump only for package @clayui/form
+
+# [3.49.0](https://github.com/liferay/clay/compare/v3.48.0...v3.49.0) (2022-03-15)
+
+**Note:** Version bump only for package @clayui/form
+
 # [3.47.0](https://github.com/liferay/clay/compare/v3.46.0...v3.47.0) (2022-02-23)
 
 **Note:** Version bump only for package @clayui/form

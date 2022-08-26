@@ -1,0 +1,144 @@
+---
+title: 'Modal'
+description: 'A modal is a secondary window that communicates or provides an action inside the same process.'
+lexiconDefinition: 'https://liferay.design/lexicon/core-components/modals/'
+packageNpm: '@clayui/modal'
+---
+
+import {ClayModalHeaderExamples, Modal} from '$packages/clay-modal/docs/index';
+
+<div class="nav-toc-absolute">
+<div class="nav-toc">
+
+-   [Usage](#usage)
+    -   [useModal hook](#usemodal-hook)
+-   [Header](#header)
+-   [Provider](#provider)
+
+</div>
+</div>
+
+You may want to compose your content and customize with your use cases or add your own components while still keeping the logic of a modal.
+
+<Modal />
+
+### Usage
+
+Modal can be controlled using the `useModal` hook without the need for additional state, it handles the animations for you.
+
+```jsx
+const Dialog = () => {
+	const {observer, onOpenChange, open} = useModal();
+
+	return (
+		<>
+			{open && (
+				<ClayModal observer={observer} spritemap={spritemap}>
+					<ClayModal.Header>Title</ClayModal.Header>
+					<ClayModal.Body>Body</ClayModal.Body>
+					<ClayModal.Footer
+						last={
+							<ClayButton onClick={() => onOpenChange(false)}>
+								Close
+							</ClayButton>
+						}
+					/>
+				</ClayModal>
+			)}
+			<ClayButton onClick={() => onOpenChange(true)}>
+				Open modal
+			</ClayButton>
+		</>
+	);
+};
+```
+
+#### useModal hook
+
+The `useModal` [hook](https://reactjs.org/docs/hooks-intro.html) is required to create a Modal component in Clay, it is responsible for communicating with ClayModal and controlling states to make animations, this is necessary because Modal needs animation when opening and closing so we need to delay calls of the `onClose` so you can safely control Modal's visibility or do other things.
+
+`useModal` returns a signature with `observer` and `onClose`:
+
+-   **observer** - Observer is the communication channel that connects ClayModal with `useModal`.
+-   **onOpenChange** - Callback to change open state.
+-   **open** - Flag to indicate the open state of the modal.
+
+```jsx
+const {observer, onOpenChange, open} = useModal();
+```
+
+<div class="clay-site-alert alert alert-warning">
+	To avoid future problems, do not use the information or change the values
+	​​of `observer`, it is considered a bad practice.
+</div>
+
+### Header
+
+`ClayModal.Header` offers two different APIs for use by toggling the prop `withTitle`. By default(`withTitle={true}`), `ClayModal.Header` behaves like a high-level component. If you want to use the lower-level components in Header, all you need to do is set `withTitle={false}`.
+
+Here is an example of both APIs:
+
+<ClayModalHeaderExamples />
+
+### Provider
+
+When your application uses a lot of modals, you can use `<ClayModalProvider />` to have only one open Modal on the screen and the component centered on your application, you can invoke the modal from the context through the API. It is not recommended to have multiple modals open at the same time.
+
+Add in the project root:
+
+```jsx
+<ClayModalProvider spritemap={spritemap}>
+	<MyApp />
+</ClayModalProvider>
+```
+
+In any part of your application you can invoke modal.
+
+```jsx
+import {Context} from '@clayui/modal';
+import ClayButton from '@clayui/button';
+
+const MyApp = () => {
+	const [state, dispatch] = useContext(Context);
+
+	return (
+		<ClayButton
+			displayType="primary"
+			onClick={() =>
+				dispatch({
+					payload: {
+						body: <h1>{'Hello world!'}</h1>,
+						footer: [
+							,
+							,
+							<ClayButton key={3} onClick={state.onClose}>
+								{'Primary'}
+							</ClayButton>,
+						],
+						header: 'Title',
+						size: 'lg',
+					},
+					type: 1,
+				})
+			}
+		>
+			{'Open modal'}
+		</ClayButton>
+	);
+};
+```
+
+Provider contains two different states that you can control:
+
+-   **Close** - CLOSE
+-   **Open** - OPEN
+
+The context signature is similar to a [`useReducer`](https://reactjs.org/docs/hooks-reference.html#usereducer), contains `state` and `dispatch`.
+
+```js
+const [state, dispatch] = useContext(Context);
+
+dispatch({payload: {...}, type: 'OPEN'});
+```
+
+`state` returns all values that are passed to dispatch payload and you can pass `body`, `footer`, `header`, `size`, `status` and `url` to payload.

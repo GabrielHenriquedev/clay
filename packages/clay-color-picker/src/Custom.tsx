@@ -3,99 +3,24 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import ClayForm, {ClayInput} from '@clayui/form';
 import Icon from '@clayui/icon';
-import {TInternalStateOnChange, useInternalState} from '@clayui/shared';
-import React from 'react';
+import React, {useRef} from 'react';
 import tinycolor from 'tinycolor2';
 
-import GradientSelector from './GradientSelector';
-import Hue from './Hue';
 import Splotch from './Splotch';
-import {useHexInput} from './hooks';
+import {findColorIndex, getCSSVariableColor} from './util';
 
-interface IRGBInputProps {
-	/**
-	 * Callback function for when the input value is changed
-	 */
-	onChange: (val: {r?: number; g?: number; b?: number}) => void;
+type Props = {
+	color: tinycolor.Instance;
 
 	/**
-	 * The name of the input. R, G, or B.
-	 */
-	name: string;
-
-	/**
-	 * The value of the input.
-	 */
-	value: number;
-}
-
-/**
- * Renders input that displays RGB values
- */
-const RGBInput: React.FunctionComponent<IRGBInputProps> = ({
-	name,
-	onChange,
-	value,
-}) => {
-	const inputRef = React.useRef(null);
-	const [inputValue, setInputValue] = React.useState(value);
-
-	const handleOnChange = (event: any) => {
-		const value = event.target.value;
-
-		if (value === '') {
-			return;
-		}
-
-		let newVal = Number(value);
-
-		if (newVal < 0) {
-			newVal = 0;
-		} else if (newVal > 255) {
-			newVal = 255;
-		}
-
-		setInputValue(newVal);
-
-		onChange({[name]: newVal});
-	};
-
-	React.useEffect(() => {
-		if (document.activeElement !== inputRef.current) {
-			setInputValue(value);
-		}
-	}, [value]);
-
-	return (
-		<ClayForm.Group>
-			<ClayInput.Group>
-				<ClayInput.GroupItem>
-					<ClayInput
-						data-testid={`${name}Input`}
-						insetBefore
-						max="255"
-						min="0"
-						onChange={handleOnChange}
-						ref={inputRef}
-						type="number"
-						value={inputValue}
-					/>
-					<ClayInput.GroupInsetItem before tag="label">
-						{name.toUpperCase()}
-					</ClayInput.GroupInsetItem>
-				</ClayInput.GroupItem>
-			</ClayInput.Group>
-		</ClayForm.Group>
-	);
-};
-
-interface IProps {
-	/**
-	 * List of hex's that will display as a color splotch
+	 * List of colors that will display as a color splotch
+	 * these can be either hex values, color names or
+	 * css variables.
 	 */
 	colors: Array<string>;
+
+	editorActive: boolean;
 
 	/**
 	 * Label describing the set of colors provided
@@ -105,94 +30,49 @@ interface IProps {
 	/**
 	 * Callback for when a color is changed
 	 */
-	onChange: (val: string) => void;
+	onChange: (color: tinycolor.Instance, value: string) => void;
 
 	/**
 	 * Callback for when the list of colors is changed
 	 */
-	onColorsChange: (val: Array<string>) => void;
+	onColorsChange: (hex: string, index: number) => void;
+
+	onEditorActiveChange: (value: boolean) => void;
+
+	onSplotchChange: (value: number) => void;
 
 	/**
 	 * Flag for showing and disabling the palette of colors
 	 */
 	showPalette?: boolean;
 
+	splotch?: number;
+
 	/**
 	 * Path to the location of the spritemap resource.
 	 */
 	spritemap?: string;
+};
 
-	editorActive?: boolean;
+const DEFAULT_SPLOTCH_COLOR = 'FFFFFF';
 
-	onEditorActiveChange?: TInternalStateOnChange<boolean>;
-
-	value?: string;
-}
-
-/**
- * Renders the custom color picker
- */
-const ClayColorPickerCustom: React.FunctionComponent<IProps> = ({
+const ClayColorPickerCustom = ({
+	color,
 	colors,
 	editorActive,
 	label,
 	onChange,
 	onColorsChange,
 	onEditorActiveChange,
+	onSplotchChange,
 	showPalette,
+	splotch,
 	spritemap,
-	value,
-}) => {
-	const inputRef = React.useRef(null);
-	const [activeSplotchIndex, setActiveSplotchIndex] = React.useState(0);
-	const [internalEditorActive, setInternalEditorActive] = useInternalState({
-		initialValue: !showPalette,
-		onChange: onEditorActiveChange,
-		value: editorActive,
-	});
-
-	const color = tinycolor(showPalette ? colors[activeSplotchIndex] : value);
-
-	const [hue, setHue] = React.useState(color.toHsv().h);
-	const [hexInputVal, setHexInput] = useHexInput(color.toHex());
-
-	const {b, g, r} = color.toRgb();
-	const {s, v} = color.toHsv();
-
-	const rgbArr: Array<[number, string]> = [
-		[r, 'r'],
-		[g, 'g'],
-		[b, 'b'],
-	];
-
-	const setNewColor = (colorValue: tinycolor.Instance, setInput = true) => {
-		const hexString = colorValue.toHex();
-
-		const newColors = [...colors];
-
-		newColors[activeSplotchIndex] = hexString;
-
-		onColorsChange(newColors);
-
-		onChange(hexString);
-
-		if (setInput) {
-			setHexInput(colorValue.toHex());
-		}
-	};
-
-	React.useEffect(() => {
-		if (inputRef.current !== document.activeElement) {
-			setHexInput(color.toHex());
-
-			if (!showPalette) {
-				setHue(color.toHsv().h);
-			}
-		}
-	}, [color, showPalette]);
+}: Props) => {
+	const previousColorRef = useRef(color);
 
 	return (
-		<>
+		<div>
 			{label && (
 				<div className="clay-color-header">
 					<span className="component-title">{label}</span>
@@ -200,16 +80,14 @@ const ClayColorPickerCustom: React.FunctionComponent<IProps> = ({
 					{showPalette && (
 						<button
 							className={`${
-								internalEditorActive ? 'close' : ''
+								editorActive ? 'close' : ''
 							} component-action`}
-							onClick={() =>
-								setInternalEditorActive(!internalEditorActive)
-							}
+							onClick={() => onEditorActiveChange(!editorActive)}
 							type="button"
 						>
 							<Icon
 								spritemap={spritemap}
-								symbol={internalEditorActive ? 'times' : 'drop'}
+								symbol={editorActive ? 'times' : 'drop'}
 							/>
 						</button>
 					)}
@@ -218,20 +96,57 @@ const ClayColorPickerCustom: React.FunctionComponent<IProps> = ({
 
 			{showPalette && (
 				<div className="clay-color-swatch">
-					{colors.map((hex, i) => (
-						<div className="clay-color-swatch-item" key={i}>
+					{colors.map((hex, index) => (
+						<div className="clay-color-swatch-item" key={index}>
 							<Splotch
-								active={i === activeSplotchIndex}
+								active={index === splotch}
 								onClick={() => {
-									if (hex === 'FFFFFF') {
-										setInternalEditorActive(true);
+									if (splotch !== index) {
+										onSplotchChange(index);
 									}
 
-									setActiveSplotchIndex(i);
+									// The hexadecimal color `#FFFFFF` is treated as an empty
+									// slot so when the user enters a color that doesn't exist in
+									// the custom, clicking on an empty slot will replace that
+									// slot with the new color if don't have an active slot
+									// being edited.
+									if (hex === DEFAULT_SPLOTCH_COLOR) {
+										onEditorActiveChange(true);
 
-									setHue(tinycolor(hex).toHsv().h);
+										// Replaces the slot color with the color entered in the
+										// input if it does not have an active slot being edited.
+										if (
+											previousColorRef.current !==
+												tinycolor(
+													DEFAULT_SPLOTCH_COLOR
+												) &&
+											findColorIndex(colors, color) ===
+												-1 &&
+											typeof splotch === 'undefined'
+										) {
+											onColorsChange(
+												color.toHex(),
+												index
+											);
+											onChange(
+												color,
+												color.getOriginalInput() as string
+											);
+										} else {
+											const newColor = tinycolor(hex);
 
-									onChange(hex);
+											onColorsChange(hex, index);
+											onChange(newColor, hex);
+										}
+									} else {
+										const newColor = hex!.includes('var(')
+											? getCSSVariableColor(hex!)
+											: tinycolor(hex);
+
+										previousColorRef.current = newColor;
+
+										onChange(newColor, hex);
+									}
 								}}
 								value={hex}
 							/>
@@ -239,107 +154,7 @@ const ClayColorPickerCustom: React.FunctionComponent<IProps> = ({
 					))}
 				</div>
 			)}
-
-			{editorActive && (
-				<>
-					<div className="clay-color-map-group">
-						<GradientSelector
-							color={color}
-							hue={hue}
-							onChange={(saturation, visibility) => {
-								setNewColor(
-									tinycolor({
-										h: hue,
-										s: saturation,
-										v: visibility,
-									})
-								);
-							}}
-						/>
-
-						<div className="clay-color-map-values">
-							{rgbArr.map(([val, key]) => (
-								<RGBInput
-									key={key}
-									name={key}
-									onChange={(newVal) => {
-										const newColor = tinycolor({
-											b,
-											g,
-											r,
-											...newVal,
-										});
-
-										setHue(newColor.toHsv().h);
-										setNewColor(newColor);
-									}}
-									value={val}
-								/>
-							))}
-						</div>
-					</div>
-
-					<Hue
-						onChange={(hue) => {
-							setHue(hue);
-
-							setNewColor(tinycolor({h: hue, s, v}));
-						}}
-						value={hue}
-					/>
-
-					<div className="clay-color-footer">
-						<ClayForm.Group>
-							<ClayInput.Group>
-								<ClayInput.GroupItem>
-									<ClayInput
-										data-testid="customHexInput"
-										insetBefore
-										onBlur={(event) => {
-											const newColor = tinycolor(
-												event.target.value
-											);
-
-											if (newColor.isValid()) {
-												setHexInput(newColor.toHex());
-											} else {
-												setHexInput(color.toHex());
-											}
-										}}
-										onChange={(event) => {
-											const newHexValue =
-												event.target.value;
-
-											setHexInput(newHexValue);
-
-											const newColor =
-												tinycolor(newHexValue);
-
-											if (newColor.isValid()) {
-												setHue(newColor.toHsv().h);
-												setNewColor(newColor, false);
-											}
-										}}
-										ref={inputRef}
-										type="text"
-										value={hexInputVal
-											.toUpperCase()
-											.substring(0, 6)}
-									/>
-
-									<ClayInput.GroupInsetItem
-										before
-										tag="label"
-									>
-										#
-									</ClayInput.GroupInsetItem>
-								</ClayInput.GroupItem>
-							</ClayInput.Group>
-						</ClayForm.Group>
-					</div>
-				</>
-			)}
-		</>
+		</div>
 	);
 };
 

@@ -6,7 +6,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface ITabPaneProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ITabPaneProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Flag to indicate if `active` classname should be applied
 	 */
@@ -23,7 +23,7 @@ const delay = (fn: Function, val: number = 150) =>
 		fn();
 	}, val);
 
-const TabPane: React.FunctionComponent<ITabPaneProps> = ({
+const TabPane = ({
 	active = false,
 	children,
 	className,

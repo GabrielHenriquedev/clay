@@ -33,20 +33,20 @@ export interface ICardProps extends IContext {
 	selectable?: boolean;
 }
 
-interface IProps
+export interface IProps
 	extends ICardProps,
 		React.BaseHTMLAttributes<
 			HTMLAnchorElement | HTMLSpanElement | HTMLDivElement
 		> {}
 
-const ClayCard: React.FunctionComponent<IProps> = ({
+const ClayCard = ({
 	active,
 	children,
 	className,
 	displayType,
 	selectable = false,
 	...otherProps
-}) => {
+}: IProps) => {
 	const isCardType = {
 		file: displayType === 'file',
 		image: displayType === 'image',
@@ -77,14 +77,21 @@ const ClayCard: React.FunctionComponent<IProps> = ({
 	);
 };
 
-const ClayCardHybrid: React.FunctionComponent<IProps> & {
+function ClayCardHybrid(props: IProps): JSX.Element & {
 	AspectRatio: typeof AspectRatio;
 	Body: typeof Body;
 	Caption: typeof Caption;
 	Description: typeof Description;
 	Group: typeof Group;
 	Row: typeof Row;
-} = ({children, horizontal, interactive, ...otherProps}: IProps) => {
+};
+
+function ClayCardHybrid({
+	children,
+	horizontal,
+	interactive,
+	...otherProps
+}: IProps) {
 	const Container = interactive
 		? ClayCardNavigation
 		: horizontal
@@ -96,7 +103,7 @@ const ClayCardHybrid: React.FunctionComponent<IProps> & {
 			{children}
 		</Container>
 	);
-};
+}
 
 ClayCardHybrid.displayName = 'ClayCard';
 

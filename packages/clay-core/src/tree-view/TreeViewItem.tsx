@@ -9,19 +9,27 @@ import Layout from '@clayui/layout';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import {Keys} from '@clayui/shared';
 import classNames from 'classnames';
-import React, {Key, useCallback, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {removeItemInternalProps} from './Collection';
-import {Icons, useTreeViewContext} from './context';
+import {Icons, useAPI, useTreeViewContext} from './context';
 import {useItem} from './useItem';
 
 export interface ITreeViewItemProps
 	extends Omit<React.HTMLAttributes<HTMLLIElement>, 'children'> {
 	/**
+	 * Flag to set the node to the active state.
+	 */
+	active?: boolean;
+
+	/**
 	 * Property for rendering actions on a Node.
 	 */
 	actions?: React.ReactElement;
 
+	/**
+	 * Item content.
+	 */
 	children: React.ReactNode;
 
 	/**
@@ -30,17 +38,22 @@ export interface ITreeViewItemProps
 	disabled?: boolean;
 
 	/**
-	 * Internal property.
+	 * @ignore
 	 */
 	isDragging?: boolean;
 
 	/**
-	 * Internal property.
+	 * Flag to remove the visual of the hover over the item.
+	 */
+	noHover?: boolean;
+
+	/**
+	 * @ignore
 	 */
 	overPosition?: string;
 
 	/**
-	 * Internal property.
+	 * @ignore
 	 */
 	overTarget?: boolean;
 }
@@ -65,11 +78,13 @@ export const TreeViewItem = React.forwardRef<
 	const {
 		childrenRoot,
 		close,
+		expandDoubleClick,
 		expandedKeys,
 		insert,
 		nestedKey,
 		onLoadMore,
 		onRenameItem,
+		onSelect,
 		open,
 		remove,
 		replace,
@@ -85,25 +100,17 @@ export const TreeViewItem = React.forwardRef<
 
 	const [loading, setLoading] = useState(false);
 
+	const api = useAPI();
+
 	const [left, right] = React.Children.toArray(children);
 
 	const group =
 		// @ts-ignore
 		right?.type?.displayName === 'ClayTreeViewGroup' ? right : null;
 
-	const hasKey = useCallback(
-		(key: Key) => {
-			return selection.selectedKeys.has(key);
-		},
-		[selection.selectedKeys]
-	);
-
 	if (!group && nestedKey && item[nestedKey] && childrenRoot.current) {
 		return React.cloneElement(
-			childrenRoot.current(removeItemInternalProps(item), {
-				has: hasKey,
-				toggle: selection.toggleSelection,
-			}),
+			childrenRoot.current(removeItemInternalProps(item), ...api),
 			{
 				actions,
 				isDragging,
@@ -150,8 +157,10 @@ export const TreeViewItem = React.forwardRef<
 						nodeProps.className,
 						{
 							active:
-								selectionMode === 'single' &&
-								selection.selectedKeys.has(item.key),
+								(selectionMode === 'single' &&
+									selection.selectedKeys.has(item.key)) ||
+								itemStackProps.active ||
+								nodeProps.active,
 							collapsed: group && expandedKeys.has(item.key),
 							disabled:
 								itemStackProps.disabled || nodeProps.disabled,
@@ -162,6 +171,8 @@ export const TreeViewItem = React.forwardRef<
 								overTarget && overPosition === 'middle',
 							'treeview-dropping-top':
 								overTarget && overPosition === 'top',
+							'treeview-no-hover':
+								itemStackProps.noHover || nodeProps.noHover,
 						}
 					)}
 					disabled={itemStackProps.disabled || nodeProps.disabled}
@@ -198,8 +209,20 @@ export const TreeViewItem = React.forwardRef<
 							return;
 						}
 
+						// event.detail it has no type but is an existing property of the
+						// element to know how many clicks were triggered.
+						// https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
+						// @ts-ignore
+						if (expandDoubleClick && event.detail !== 2) {
+							return;
+						}
+
 						if (selectionMode === 'single') {
 							selection.toggleSelection(item.key);
+
+							if (onSelect) {
+								onSelect(removeItemInternalProps(item));
+							}
 						}
 
 						if (group) {
@@ -224,11 +247,32 @@ export const TreeViewItem = React.forwardRef<
 					}}
 					onFocus={() => actions && setFocus(true)}
 					onKeyDown={(event) => {
-						event.preventDefault();
-
 						if (itemStackProps.disabled || nodeProps.disabled) {
 							return;
 						}
+
+						if (hasItemStack && itemStackProps.onKeyDown) {
+							itemStackProps.onKeyDown(event);
+						}
+
+						if (nodeProps.onKeyDown) {
+							(
+								nodeProps.onKeyDown as unknown as (
+									event: React.KeyboardEvent<HTMLDivElement>
+								) => void
+							)(event);
+						}
+
+						if (event.defaultPrevented) {
+							return;
+						}
+
+						// We call `preventDefault` after checking if it was ignored
+						// because the behavior is different when the developer sets
+						// `onKeyDown` it can ignore the default behavior of the browser
+						// and the default behavior of the TreeView when this is not done
+						// by default we ignore the default browser behavior by default.
+						event.preventDefault();
 
 						const {key} = event;
 
@@ -323,6 +367,10 @@ export const TreeViewItem = React.forwardRef<
 
 						if (key === Keys.Spacebar) {
 							selection.toggleSelection(item.key);
+
+							if (onSelect) {
+								onSelect(removeItemInternalProps(item));
+							}
 						}
 					}}
 					ref={ref}
@@ -347,7 +395,7 @@ export const TreeViewItem = React.forwardRef<
 						}}
 						tabIndex={-2}
 					>
-						{typeof left === 'string' ? (
+						{typeof left === 'string' && !right ? (
 							<Layout.ContentRow>
 								<Layout.ContentCol expand>
 									<div className="component-text">{left}</div>
@@ -381,7 +429,19 @@ export const TreeViewItem = React.forwardRef<
 TreeViewItem.displayName = 'ClayTreeViewItem';
 
 interface ITreeViewItemStackProps extends React.HTMLAttributes<HTMLDivElement> {
+	/**
+	 * Flag to set the node to the active state.
+	 */
+	active?: boolean;
+
+	/**
+	 * @ignore
+	 */
 	actions?: React.ReactElement;
+
+	/**
+	 * Item content.
+	 */
 	children: React.ReactNode;
 
 	/**
@@ -395,7 +455,19 @@ interface ITreeViewItemStackProps extends React.HTMLAttributes<HTMLDivElement> {
 	 */
 	expanderDisabled?: boolean;
 
+	/**
+	 * @ignore
+	 */
 	expandable?: boolean;
+
+	/**
+	 * Flag to remove the visual of the hover over the item.
+	 */
+	noHover?: boolean;
+
+	/**
+	 * @ignore
+	 */
 	loading?: boolean;
 }
 
@@ -441,6 +513,7 @@ export function TreeViewItemStack({
 		expanderClassName,
 		expanderIcons,
 		nestedKey,
+		onSelect,
 		open,
 		selection,
 		toggle,
@@ -503,7 +576,12 @@ export function TreeViewItemStack({
 					return null;
 				}
 
-				if (typeof child === 'string' || typeof child === 'number') {
+				if (
+					typeof child === 'string' ||
+					typeof child === 'number' ||
+					// @ts-ignore
+					child?.type.displayName === 'Text'
+				) {
 					content = <div className="component-text">{child}</div>;
 
 					// @ts-ignore
@@ -531,6 +609,10 @@ export function TreeViewItemStack({
 							}
 
 							selection.toggleSelection(item.key);
+
+							if (onSelect) {
+								onSelect(removeItemInternalProps(item));
+							}
 
 							if (expandOnCheck) {
 								open(item.key);
@@ -590,7 +672,7 @@ function Actions({children}: TreeViewItemActionsProps) {
 									</div>
 								),
 								className: classNames(
-									'component-action',
+									'component-action quick-action-item',
 									child.props.className
 								),
 								onClick: (
@@ -628,7 +710,7 @@ function Actions({children}: TreeViewItemActionsProps) {
 											</div>
 										),
 										className: classNames(
-											'component-action',
+											'component-action quick-action-item',
 											child.props.trigger.props.className
 										),
 										onClick: (

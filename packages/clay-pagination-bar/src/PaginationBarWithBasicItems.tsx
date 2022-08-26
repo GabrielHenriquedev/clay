@@ -6,7 +6,7 @@
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import {ClayPaginationWithBasicItems} from '@clayui/pagination';
-import {sub} from '@clayui/shared';
+import {InternalDispatch, sub, useInternalState} from '@clayui/shared';
 import React from 'react';
 
 import PaginationBar from './PaginationBar';
@@ -42,12 +42,18 @@ interface IDelta {
 
 interface IProps extends React.ComponentProps<typeof PaginationBar> {
 	/**
+	 * Sets the currently active page (controlled).
+	 */
+	active?: number;
+
+	/**
 	 * The value of delta that is currently selected
 	 */
 	activeDelta?: number;
 
 	/**
 	 * Initialize the page that is currently active. The first page is `1`.
+	 * @deprecated since v3.52.0 - use `active` instead.
 	 */
 	activePage?: number;
 
@@ -63,6 +69,16 @@ interface IProps extends React.ComponentProps<typeof PaginationBar> {
 	 * Possible values of items per page.
 	 */
 	deltas?: Array<IDelta>;
+
+	/**
+	 * Sets the default active page (uncontrolled).
+	 */
+	defaultActive?: number;
+
+	/**
+	 * Flag to disable ellipsis button
+	 */
+	disableEllipsis?: boolean;
 
 	/**
 	 * The page numbers that should be disabled. For example, `[2,5,6]`.
@@ -93,6 +109,12 @@ interface IProps extends React.ComponentProps<typeof PaginationBar> {
 	};
 
 	/**
+	 * Callback called when the state of the active page changes (controlled).
+	 * This is only used if an href is not provided.
+	 */
+	onActiveChange?: InternalDispatch<number>;
+
+	/**
 	 * Callback for when the number of elements per page changes. This is only used if
 	 * an href is not provided.
 	 */
@@ -101,6 +123,7 @@ interface IProps extends React.ComponentProps<typeof PaginationBar> {
 	/**
 	 * Callback for when the active page changes. This is only used if
 	 * an href is not provided.
+	 * @deprecated since v3.52.0 - use `onActiveChange` instead.
 	 */
 	onPageChange?: (page: number) => void;
 
@@ -126,102 +149,111 @@ const DEFAULT_LABELS = {
 	selectPerPageItems: '{0} items',
 };
 
-export const ClayPaginationBarWithBasicItems: React.FunctionComponent<IProps> =
-	({
-		activeDelta,
-		activePage = 1,
-		alignmentPosition,
-		deltas = defaultDeltas,
-		disabledPages,
-		ellipsisBuffer,
-		hrefConstructor,
-		labels = DEFAULT_LABELS,
-		onDeltaChange,
-		onPageChange,
-		showDeltasDropDown = true,
-		spritemap,
-		totalItems,
-		...otherProps
-	}: IProps) => {
-		if (!activeDelta) {
-			activeDelta = deltas[0].label;
+export const ClayPaginationBarWithBasicItems = ({
+	active,
+	activeDelta,
+	activePage,
+	alignmentPosition,
+	defaultActive = 1,
+	deltas = defaultDeltas,
+	disabledPages,
+	disableEllipsis = false,
+	ellipsisBuffer,
+	hrefConstructor,
+	labels = DEFAULT_LABELS,
+	onActiveChange,
+	onDeltaChange,
+	onPageChange,
+	showDeltasDropDown = true,
+	spritemap,
+	totalItems,
+	...otherProps
+}: IProps) => {
+	const [internalActive, setActive] = useInternalState({
+		defaultName: 'defaultActive',
+		defaultValue: defaultActive,
+		handleName: 'onActiveChange',
+		name: 'value',
+		onChange: onActiveChange ?? onPageChange,
+		value: typeof active === 'undefined' ? activePage : active,
+	});
+
+	if (!activeDelta) {
+		activeDelta = deltas[0].label;
+	}
+
+	const items: Items = deltas.map(({href, label}) => {
+		const item: {
+			href?: string;
+			label?: string;
+			onClick?: () => void;
+		} = {
+			href,
+			label: sub(labels.selectPerPageItems, [String(label)]),
+		};
+
+		if (!href) {
+			item.onClick = () => {
+				if (onDeltaChange) {
+					onDeltaChange(label as number);
+				}
+			};
 		}
 
-		const items: Items = deltas.map(({href, label}) => {
-			const item: {
-				href?: string;
-				label?: string;
-				onClick?: () => void;
-			} = {
-				href,
-				label: sub(labels.selectPerPageItems, [String(label)]),
-			};
+		return item;
+	});
 
-			if (!href) {
-				item.onClick = () => {
-					if (onDeltaChange) {
-						onDeltaChange(label as number);
-					}
-				};
-			}
+	const totalPages = Math.ceil(totalItems / activeDelta);
 
-			return item;
-		});
+	React.useEffect(() => {
+		if (internalActive > totalPages) {
+			setActive(1);
+		}
+	}, [totalPages]);
 
-		const totalPages = Math.ceil(totalItems / activeDelta);
-
-		React.useEffect(() => {
-			if (onPageChange && activePage > totalPages) {
-				onPageChange(1);
-			}
-		}, [totalPages]);
-
-		return (
-			<PaginationBar {...otherProps}>
-				{showDeltasDropDown && (
-					<PaginationBar.DropDown
-						alignmentPosition={alignmentPosition}
-						items={items}
-						trigger={
-							<ClayButton
-								data-testid="selectPaginationBar"
-								displayType="unstyled"
-							>
-								{sub(labels.perPageItems, [activeDelta])}
-
-								<ClayIcon
-									spritemap={spritemap}
-									symbol="caret-double-l"
-								/>
-							</ClayButton>
-						}
-					/>
-				)}
-
-				<PaginationBar.Results>
-					{sub(labels.paginationResults, [
-						(activePage - 1) * activeDelta + 1,
-						activePage * activeDelta < totalItems
-							? activePage * activeDelta
-							: totalItems,
-						totalItems,
-					])}
-				</PaginationBar.Results>
-
-				<ClayPaginationWithBasicItems
-					activePage={activePage}
+	return (
+		<PaginationBar {...otherProps}>
+			{showDeltasDropDown && (
+				<PaginationBar.DropDown
 					alignmentPosition={alignmentPosition}
-					disabledPages={disabledPages}
-					ellipsisBuffer={ellipsisBuffer}
-					hrefConstructor={hrefConstructor}
-					onPageChange={(page) => {
-						if (page && onPageChange) {
-							onPageChange(page);
-						}
-					}}
-					spritemap={spritemap}
-					totalPages={totalPages}
+					items={items}
+					trigger={
+						<ClayButton
+							data-testid="selectPaginationBar"
+							displayType="unstyled"
+						>
+							{sub(labels.perPageItems, [activeDelta])}
+
+							<ClayIcon
+								spritemap={spritemap}
+								symbol="caret-double-l"
+							/>
+						</ClayButton>
+					}
 				/>
-			</PaginationBar>
-		);
-	};
+			)}
+
+			<PaginationBar.Results>
+				{sub(labels.paginationResults, [
+					(internalActive - 1) * activeDelta + 1,
+					internalActive * activeDelta < totalItems
+						? internalActive * activeDelta
+						: totalItems,
+					totalItems,
+				])}
+			</PaginationBar.Results>
+
+			<ClayPaginationWithBasicItems
+				active={internalActive}
+				alignmentPosition={alignmentPosition}
+				disableEllipsis={disableEllipsis}
+				disabledPages={disabledPages}
+				ellipsisBuffer={ellipsisBuffer}
+				hrefConstructor={hrefConstructor}
+				onActiveChange={setActive}
+				spritemap={spritemap}
+				totalPages={totalPages}
+			/>
+		</PaginationBar>
+	);
+};

@@ -4,6 +4,7 @@ description: 'A tree view is a component based on nodes that are shown in a hier
 packageNpm: '@clayui/core'
 packageStatus: 'Beta'
 lexiconDefinition: 'https://liferay.design/lexicon/core-components/tree-view/'
+storybookPath: 'design-system-components-treeview'
 ---
 
 import {Example, MultipleSelection} from '$packages/clay-core/docs/treeview';
@@ -27,6 +28,7 @@ import {Example, MultipleSelection} from '$packages/clay-core/docs/treeview';
 -   [Expander](#expander)
     -   [Custom expander](#custom-expander)
     -   [Disabled](#expander-disabled)
+    -   [Manual Expand](#manual-expand)
 -   [Selection](#selection)
     -   [Single Selection](#single-selection)
     -   [Multiple Selection](#multiple-selection)
@@ -135,10 +137,10 @@ function Example() {
 	];
 
 	return (
-		<TreeView items={items} nestedKey="children">
+		<TreeView defaultItems={items} nestedKey="children">
 			{(item) => (
 				<TreeView.Item key={item.name}>
-					{item.name}
+					<TreeView.ItemStack>{item.name}</TreeView.ItemStack>
 
 					{item.children && (
 						<TreeView.Group items={item.children}>
@@ -222,6 +224,8 @@ In static content, it is also possible to define the `key` to be used in the sel
 
 #### Nested
 
+Creating a nested item is necessary to declare it inside the `<TreeView.Item>` to differentiate the nested items from the current item, it is necessary to wrap the item elements in a `<TreeView.ItemStack />`. To declare the items of an item, declare the same components nested inside a `<TreeView.Group />` component.
+
 ```jsx
 <TreeView.Item>
 	<TreeView.ItemStack>
@@ -230,7 +234,11 @@ In static content, it is also possible to define the `key` to be used in the sel
 		Drive
 	</TreeView.ItemStack>
 	<TreeView.Group>
-		{...}
+		<TreeView.Item disabled={true}>
+			<Checkbox />
+			<Icon symbol="folder" />
+			Documents
+		</TreeView.Item>
 	</TreeView.Group>
 </TreeView.Item>
 ```
@@ -346,6 +354,44 @@ The `Expander` is automatically disabled when the item is disabled but you can o
 
 The `expanderDisabled` property is only available in the `<TreeView.ItemStack />` component where the `Expander` is visible and has children.
 
+### Manual Expand
+
+Some more advanced use cases want to change the behavior of expanding the item when the user interacts with the item differently, e.g single click selects, double click expands the item.
+
+The `expand` method is available via render props only when the content is dynamic, the same as selection, expose two methods, `toggle` and `has`.
+
+```jsx
+<TreeView>
+	{(item, selection, expand) => (
+		<TreeView.Item
+			onClick={(event) => {
+				clearTimeout(clickTimerRef.current);
+
+				// Ignores the component's default behavior, clicking the
+				// item expands the item if it has any child items.
+				event.preventDefault();
+
+				switch (event.detail) {
+					case 1:
+						clickTimerRef.current = setTimeout(() => {
+							if (!selection.has(item.id)) {
+								selection.toggle(item.id);
+							}
+						}, 200);
+						break;
+					case 2:
+						expand.toggle(item.id);
+					default:
+						break;
+				}
+			}}
+		>
+			Item
+		</TreeView.Item>
+	)}
+</TreeView>
+```
+
 ## Selection
 
 The selection allows the user to select one or more items in the TreeView, there are three main interactions that can be configured and are defined using the `selectionMode` prop.
@@ -455,10 +501,8 @@ The `selection` method is available via render props when the content is dynamic
 <TreeView>
 	{(item, selection) => (
 		<TreeView.Item
+			active={selection.has(item.id)}
 			onClick={() => selection.toggle(item.id)}
-			style={{
-				backgroundColor: selection.has(item.id) ? 'aliceblue' : '',
-			}}
 		>
 			Drive
 		</TreeView.Item>

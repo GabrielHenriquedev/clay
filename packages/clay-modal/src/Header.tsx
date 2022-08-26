@@ -10,9 +10,11 @@ import React from 'react';
 
 import Context, {IContext} from './Context';
 
-export const ItemGroup: React.FunctionComponent<
-	React.HTMLAttributes<HTMLDivElement>
-> = ({children, className, ...otherProps}) => (
+export const ItemGroup = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => (
 	<div className={classNames('modal-item-group', className)} {...otherProps}>
 		{children}
 	</div>
@@ -25,7 +27,7 @@ export interface IItemProps extends React.HTMLAttributes<HTMLDivElement> {
 	shrink?: boolean;
 }
 
-export const Item: React.FunctionComponent<IItemProps> = ({
+export const Item = ({
 	children,
 	className,
 	shrink,
@@ -41,9 +43,11 @@ export const Item: React.FunctionComponent<IItemProps> = ({
 	</div>
 );
 
-export const TitleSection: React.FunctionComponent<
-	React.HTMLAttributes<HTMLDivElement>
-> = ({children, className, ...otherProps}) => (
+export const TitleSection = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => (
 	<div
 		className={classNames('modal-title-section', className)}
 		{...otherProps}
@@ -52,17 +56,29 @@ export const TitleSection: React.FunctionComponent<
 	</div>
 );
 
-export const Title: React.FunctionComponent<
-	React.HTMLAttributes<HTMLDivElement>
-> = ({children, className, ...otherProps}) => (
-	<div className={classNames('modal-title', className)} {...otherProps}>
-		{children}
-	</div>
-);
+export const Title = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => {
+	const {ariaLabelledby} = React.useContext(Context);
 
-export const TitleIndicator: React.FunctionComponent<
-	React.HTMLAttributes<HTMLDivElement>
-> = ({children, className, ...otherProps}) => (
+	return (
+		<div
+			className={classNames('modal-title', className)}
+			{...otherProps}
+			id={ariaLabelledby}
+		>
+			{children}
+		</div>
+	);
+};
+
+export const TitleIndicator = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => (
 	<div
 		className={classNames('modal-title-indicator', className)}
 		{...otherProps}
@@ -71,9 +87,11 @@ export const TitleIndicator: React.FunctionComponent<
 	</div>
 );
 
-export const SubtitleSection: React.FunctionComponent<
-	React.HTMLAttributes<HTMLDivElement>
-> = ({children, className, ...otherProps}) => (
+export const SubtitleSection = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => (
 	<div
 		className={classNames('modal-subtitle-section', className)}
 		{...otherProps}
@@ -82,9 +100,11 @@ export const SubtitleSection: React.FunctionComponent<
 	</div>
 );
 
-export const Subtitle: React.FunctionComponent<
-	React.HTMLAttributes<HTMLDivElement>
-> = ({children, className, ...otherProps}) => (
+export const Subtitle = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => (
 	<div className={classNames('modal-subtitle', className)} {...otherProps}>
 		{children}
 	</div>
@@ -97,12 +117,12 @@ const ICON_MAP = {
 	warning: 'warning-full',
 };
 
-const HighLevel: React.FunctionComponent<IContext> = ({
+const HighLevel = ({
 	children,
 	onClose,
 	spritemap,
 	status,
-}) => (
+}: IContext & {children?: React.ReactNode}) => (
 	<>
 		<Title>
 			{status && (
@@ -124,9 +144,11 @@ const HighLevel: React.FunctionComponent<IContext> = ({
 	</>
 );
 
-const ClayModalHeader: React.FunctionComponent<
-	React.HTMLAttributes<HTMLDivElement>
-> = ({children, className, ...otherProps}) => (
+const ClayModalHeader = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => (
 	<div className={classNames('modal-header', className)} {...otherProps}>
 		{children}
 	</div>
@@ -140,7 +162,7 @@ export interface IHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 	withTitle?: boolean;
 }
 
-const ClayModalHeaderHybrid: React.FunctionComponent<IHeaderProps> = ({
+const ClayModalHeaderHybrid = ({
 	children,
 	withTitle = true,
 	...otherProps

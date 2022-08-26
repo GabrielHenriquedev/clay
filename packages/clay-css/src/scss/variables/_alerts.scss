@@ -182,6 +182,8 @@ $alert-indicator: () !default;
 $alert-indicator: map-deep-merge(
 	(
 		font-size: $alert-indicator-font-size,
+		line-height: 1,
+		vertical-align: 8%,
 		lead: (
 			margin-left: $alert-lead-spacer-x,
 		),
@@ -397,6 +399,7 @@ $alert-notification-sm-down: map-merge(
 $alert-autofit-row: () !default;
 $alert-autofit-row: map-deep-merge(
 	(
+		align-items: baseline,
 		margin-left: -0.5rem,
 		margin-right: -0.5rem,
 		width: auto,
@@ -410,8 +413,16 @@ $alert-autofit-row: map-deep-merge(
 
 // Alert Color Levels
 
+/// @deprecated as of v3.x with no replacement, this color modifier is too specific to support a variety of colors
+
 $alert-bg-level: -10 !default;
+
+/// @deprecated as of v3.x with no replacement, this color modifier is too specific to support a variety of colors
+
 $alert-border-level: -9 !default;
+
+/// @deprecated as of v3.x with no replacement, this color modifier is too specific to support a variety of colors
+
 $alert-color-level: 6 !default;
 
 // Alert Feedback

@@ -19,17 +19,17 @@ const ariaLabels = {
 };
 
 const DatePickerWithState = ({
-	initialMonth = new Date(2019, 3, 18),
+	defaultMonth = new Date(2019, 3, 18),
 	years = {end: 2019, start: 2019},
 	...props
 }: any) => {
-	const [value, setValue] = React.useState();
+	const [value, setValue] = React.useState('');
 
 	return (
 		<ClayDatePicker
 			{...props}
-			initialMonth={initialMonth}
-			onValueChange={setValue}
+			defaultMonth={defaultMonth}
+			onChange={setValue}
 			value={value}
 			years={years}
 		/>
@@ -49,7 +49,7 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText, getByTestId} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -90,7 +90,7 @@ describe('IncrementalInteractions', () => {
 		const {getByTestId} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -109,7 +109,7 @@ describe('IncrementalInteractions', () => {
 			<>
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					spritemap={spritemap}
 				/>
@@ -130,7 +130,7 @@ describe('IncrementalInteractions', () => {
 		const {getByTestId} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -152,7 +152,7 @@ describe('IncrementalInteractions', () => {
 		const {getByTestId} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 				years={{
@@ -178,7 +178,7 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText, getByTestId, queryAllByLabelText} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -203,7 +203,7 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -226,7 +226,7 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText, getByTestId, queryAllByLabelText} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -249,8 +249,8 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText, getByTestId, queryAllByLabelText} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
-				initialMonth={new Date(2019, 0, 18)}
+				defaultExpanded
+				defaultMonth={new Date(2019, 0, 18)}
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 				years={{
@@ -279,8 +279,8 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText, getByTestId, queryAllByLabelText} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
-				initialMonth={new Date(2019, 11, 18)}
+				defaultExpanded
+				defaultMonth={new Date(2019, 11, 18)}
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 				years={{
@@ -307,7 +307,7 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText, getByTestId} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -330,7 +330,7 @@ describe('IncrementalInteractions', () => {
 		const {getByLabelText, getByTestId} = render(
 			<DatePickerWithState
 				ariaLabels={ariaLabels}
-				initialExpanded
+				defaultExpanded
 				placeholder="YYYY-MM-DD"
 				spritemap={spritemap}
 			/>
@@ -345,8 +345,10 @@ describe('IncrementalInteractions', () => {
 
 		expect(input.value).toBe('2019-05-01');
 		expect(yearSelect.value).toBe('2019');
-		expect(monthSelect.value).toBe('3');
-		expect(dayNumber.classList).toContain('active');
+		expect(monthSelect.value).toBe('4');
+		expect(
+			getByLabelText(new Date('2019 05 01').toDateString()).classList
+		).toContain('active');
 	});
 
 	describe('TimePicker', () => {
@@ -354,7 +356,7 @@ describe('IncrementalInteractions', () => {
 			const {getByLabelText, getByTestId} = render(
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					spritemap={spritemap}
 					time
@@ -373,7 +375,7 @@ describe('IncrementalInteractions', () => {
 			const {getByLabelText, getByTestId} = render(
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					spritemap={spritemap}
 					time
@@ -399,7 +401,7 @@ describe('IncrementalInteractions', () => {
 			const {getByLabelText, getByTestId} = render(
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					spritemap={spritemap}
 					time
@@ -424,7 +426,7 @@ describe('IncrementalInteractions', () => {
 			const {getByLabelText, getByTestId} = render(
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					spritemap={spritemap}
 					time
@@ -452,7 +454,7 @@ describe('IncrementalInteractions', () => {
 			const {getByLabelText, getByTestId} = render(
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					spritemap={spritemap}
 					time
@@ -489,7 +491,7 @@ describe('IncrementalInteractions', () => {
 			const {getByLabelText} = render(
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					range
 					spritemap={spritemap}
@@ -513,7 +515,7 @@ describe('IncrementalInteractions', () => {
 			const {getByLabelText} = render(
 				<DatePickerWithState
 					ariaLabels={ariaLabels}
-					initialExpanded
+					defaultExpanded
 					placeholder="YYYY-MM-DD"
 					range
 					spritemap={spritemap}
@@ -539,7 +541,7 @@ describe('IncrementalInteractions', () => {
 				const {getByLabelText} = render(
 					<DatePickerWithState
 						ariaLabels={ariaLabels}
-						initialExpanded
+						defaultExpanded
 						placeholder="YYYY-MM-DD"
 						range
 						spritemap={spritemap}
@@ -567,5 +569,162 @@ describe('IncrementalInteractions', () => {
 				expect(endDate.classList).not.toContain('active');
 			}
 		);
+	});
+
+	describe('Backward compatibility', () => {
+		it('define the initial state of expanded', () => {
+			render(
+				<DatePickerWithState
+					ariaLabels={ariaLabels}
+					initialExpanded
+					placeholder="YYYY-MM-DD"
+					spritemap={spritemap}
+				/>
+			);
+
+			expect(
+				(
+					document.body.querySelector(
+						'.dropdown-menu'
+					) as HTMLDivElement
+				).classList
+			).toContain('show');
+		});
+
+		it('define the initial state of month', () => {
+			const DatePickerWithOldProp = ({
+				initialMonth = new Date(2019, 3, 18),
+				years = {end: 2019, start: 2019},
+				...props
+			}: any) => {
+				const [value, setValue] = React.useState('');
+
+				return (
+					<ClayDatePicker
+						{...props}
+						initialMonth={initialMonth}
+						onValueChange={setValue}
+						value={value}
+						years={years}
+					/>
+				);
+			};
+
+			const {getByTestId} = render(
+				<DatePickerWithOldProp
+					ariaLabels={ariaLabels}
+					defaultExpanded
+					initialMonth={new Date(2019, 0, 18)}
+					placeholder="YYYY-MM-DD"
+					spritemap={spritemap}
+					years={{
+						end: 2020,
+						start: 2017,
+					}}
+				/>
+			);
+
+			const monthSelect: any = getByTestId('month-select');
+			const yearSelect: any = getByTestId('year-select');
+			const daySelected = document.querySelector(
+				'[aria-label="Fri Jan 18 2019"]'
+			) as HTMLDivElement;
+
+			expect(yearSelect.value).toBe('2019');
+			expect(monthSelect.value).toBe('0');
+			expect(daySelected.innerHTML).toBe('18');
+		});
+	});
+
+	it('clicking the dot button should select the current date using the deprecated properties', () => {
+		const DatePickerWithOldProp = ({
+			defaultMonth = new Date(2019, 3, 18),
+			years = {end: 2019, start: 2019},
+			...props
+		}: any) => {
+			const [value, setValue] = React.useState('');
+
+			return (
+				<ClayDatePicker
+					{...props}
+					defaultMonth={defaultMonth}
+					onValueChange={setValue}
+					value={value}
+					years={years}
+				/>
+			);
+		};
+
+		const {getByLabelText} = render(
+			<DatePickerWithOldProp
+				ariaLabels={ariaLabels}
+				defaultExpanded
+				placeholder="YYYY-MM-DD"
+				spritemap={spritemap}
+			/>
+		);
+
+		const input: any = getByLabelText(ariaLabels.input);
+		const dotButtonEl = getByLabelText(ariaLabels.buttonDot);
+
+		fireEvent.click(dotButtonEl);
+
+		const currentDate = new Date(2019, 3, 18);
+
+		expect(input.value).toBe(formatDate(currentDate, 'yyyy-MM-dd'));
+
+		const dayNumber = getByLabelText(currentDate.toDateString());
+		expect(dayNumber.classList).toContain('active');
+	});
+
+	it('updates date state when resetting input value using the controlled mode', () => {
+		function DatePickerControlled() {
+			const [value, setValue] = React.useState('2019-04-10 - 2019-04-15');
+
+			return (
+				<>
+					<button
+						aria-label="reset"
+						onClick={() => setValue('')}
+						type="button"
+					>
+						RESET
+					</button>
+					<ClayDatePicker
+						ariaLabels={ariaLabels}
+						defaultExpanded
+						defaultMonth={new Date(2019, 3, 18)}
+						onChange={setValue}
+						placeholder="YYYY-MM-DD"
+						range
+						spritemap={spritemap}
+						value={value}
+						years={{end: 2019, start: 2019}}
+					/>
+				</>
+			);
+		}
+
+		const {getByLabelText} = render(<DatePickerControlled />);
+
+		const resetButton = getByLabelText('reset');
+		const dayNumber = getByLabelText(new Date('2019 04 10').toDateString());
+		const endDate = getByLabelText(new Date('2019 04 15').toDateString());
+
+		expect(dayNumber.classList).toContain('active');
+		expect(endDate.classList).toContain('active');
+
+		fireEvent.click(resetButton);
+
+		const input: any = getByLabelText(ariaLabels.input);
+
+		const defaultDate = getByLabelText(
+			new Date('2019 04 18').toDateString()
+		);
+
+		expect(input.value).toBe('');
+		expect(defaultDate.classList).toContain('active');
+		expect(dayNumber.classList).not.toContain('active');
+		expect(endDate.classList).not.toContain('active');
 	});
 });

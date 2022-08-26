@@ -6,9 +6,11 @@
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import classNames from 'classnames';
-import React from 'react';
+import React, {useContext} from 'react';
 
-interface IProps
+import {DropDownContext} from './DropDownContext';
+
+export interface IProps
 	extends React.HTMLAttributes<
 		HTMLSpanElement | HTMLButtonElement | HTMLAnchorElement
 	> {
@@ -28,6 +30,12 @@ interface IProps
 	href?: string;
 
 	innerRef?: React.Ref<any>;
+
+	/**
+	 * Sets the role accessibility property of the item. Set the item's
+	 * container (<li />) role use the role="" prop instead of roleItem="".
+	 */
+	roleItem?: string;
 
 	/**
 	 * Path to icon spritemap from clay-css.
@@ -55,6 +63,8 @@ const ClayDropDownItem = React.forwardRef<HTMLLIElement, IProps>(
 			href,
 			innerRef,
 			onClick,
+			role = 'presentation',
+			roleItem = 'menuitem',
 			spritemap,
 			symbolLeft,
 			symbolRight,
@@ -66,8 +76,10 @@ const ClayDropDownItem = React.forwardRef<HTMLLIElement, IProps>(
 		const clickableElement = onClick ? 'button' : 'span';
 		const ItemElement = href ? ClayLink : clickableElement;
 
+		const {close, closeOnClick} = useContext(DropDownContext);
+
 		return (
-			<li aria-selected={active} ref={ref}>
+			<li aria-selected={active} ref={ref} role={role}>
 				<ItemElement
 					{...otherProps}
 					className={classNames('dropdown-item', className, {
@@ -76,8 +88,26 @@ const ClayDropDownItem = React.forwardRef<HTMLLIElement, IProps>(
 					})}
 					disabled={disabled}
 					href={href}
-					onClick={onClick}
+					onClick={(
+						event: React.MouseEvent<
+							HTMLButtonElement | HTMLAnchorElement,
+							MouseEvent
+						>
+					) => {
+						if (onClick) {
+							onClick(event);
+						}
+
+						if (event.defaultPrevented) {
+							return;
+						}
+
+						if (closeOnClick) {
+							close();
+						}
+					}}
 					ref={innerRef}
+					role={roleItem}
 					tabIndex={disabled ? -1 : tabIndex}
 				>
 					{symbolLeft && (

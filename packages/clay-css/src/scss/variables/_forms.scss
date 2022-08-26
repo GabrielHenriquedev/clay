@@ -116,7 +116,9 @@ $input-plaintext-color: $body-color !default;
 
 /// @deprecated with no replacement
 
-$input-height-border: $input-border-top-width + $input-border-bottom-width !default;
+$input-height-border: calc(
+	#{$input-border-top-width} + #{$input-border-bottom-width}
+) !default;
 
 /// @deprecated with no replacement
 
@@ -142,6 +144,27 @@ $input-padding-y-lg: $input-btn-padding-y-lg !default;
 $input-font-size-lg-mobile: null !default;
 $input-height-lg-mobile: null !default;
 
+$input-lg: () !default;
+$input-lg: map-deep-merge(
+	(
+		border-radius: clay-enable-rounded($input-border-radius-lg),
+		font-size: $input-font-size-lg,
+		height: $input-height-lg,
+		line-height: $input-line-height-lg,
+		padding-bottom: $input-padding-y-lg,
+		padding-left: $input-padding-x-lg,
+		padding-right: $input-padding-x-lg,
+		padding-top: $input-padding-y-lg,
+		media-breakpoint-down: (
+			sm: (
+				font-size: $input-font-size-lg-mobile,
+				height: $input-height-lg-mobile,
+			),
+		),
+	),
+	$input-lg
+);
+
 // Input Sm (.form-control-sm)
 
 $input-border-radius-sm: $border-radius-sm !default;
@@ -153,6 +176,26 @@ $input-padding-y-sm: $input-btn-padding-y-sm !default;
 
 $input-font-size-sm-mobile: null !default;
 $input-height-sm-mobile: null !default;
+
+$input-sm: () !default;
+$input-sm: map-deep-merge(
+	(
+		border-radius: clay-enable-rounded($input-border-radius-sm),
+		font-size: $input-font-size-sm,
+		height: $input-height-sm,
+		line-height: $input-line-height-sm,
+		padding-bottom: $input-padding-y-sm,
+		padding-left: $input-padding-x-sm,
+		padding-right: $input-padding-x-sm,
+		padding-top: $input-padding-y-sm,
+		media-breakpoint-down: (
+			sm: (
+				height: $input-height-sm-mobile,
+			),
+		),
+	),
+	$input-sm
+);
 
 // Input Label (<label>)
 
@@ -300,9 +343,42 @@ $input-plaintext-readonly: map-deep-merge(
 	$input-plaintext-readonly
 );
 
+// textarea.form-control, textarea.form-control-plaintext, .form-control.form-control-textarea
+
 $input-textarea-height: 150px !default;
+
+$input-textarea: () !default;
+$input-textarea: map-merge(
+	(
+		height: $input-textarea-height,
+		resize: vertical,
+	),
+	$input-textarea
+);
+
+// textarea.form-control-lg, .form-control-lg.form-control-textarea
+
 $input-textarea-height-lg: 190px !default;
+
+$input-textarea-lg: () !default;
+$input-textarea-lg: map-deep-merge(
+	(
+		height: $input-textarea-height-lg,
+	),
+	$input-textarea-lg
+);
+
+// textarea.form-control-sm, .form-control-sm.form-control-textarea
+
 $input-textarea-height-sm: 120px !default;
+
+$input-textarea-sm: () !default;
+$input-textarea-sm: map-deep-merge(
+	(
+		height: $input-textarea-height-sm,
+	),
+	$input-textarea-sm
+);
 
 // Form Control Label (Labels inside Form Control Tag Group)
 
@@ -335,10 +411,11 @@ $form-control-inset: () !default;
 $form-control-inset: map-deep-merge(
 	(
 		background-color: transparent,
-		border-width: 0,
+		border-width: 0px,
 		color: $input-color,
 		flex-grow: 1,
 		margin-bottom: $form-control-inset-margin-y,
+		margin-left: 0.25rem,
 		margin-top: $form-control-inset-margin-y,
 		min-height: $form-control-inset-min-height,
 		padding: 0,
@@ -366,6 +443,7 @@ $form-control-tag-group: map-deep-merge(
 		flex-wrap: wrap,
 		height: auto,
 		padding-bottom: $form-control-tag-group-padding-y,
+		padding-left: 0.5rem,
 		padding-right: 0.5rem,
 		padding-top: $form-control-tag-group-padding-y,
 	),
@@ -449,6 +527,38 @@ $form-control-tag-group-component-action: map-deep-merge(
 		width: 2rem,
 	),
 	$form-control-tag-group-component-action
+);
+
+// .form-control-tag-group-sm.form-control
+
+$form-control-tag-group-sm: () !default;
+$form-control-tag-group-sm: map-deep-merge(
+	(
+		border-radius: clay-enable-rounded($input-border-radius-sm),
+		font-size: $input-font-size-sm,
+		height: auto,
+		line-height: $input-line-height-sm,
+		min-height: $input-height-sm,
+		padding-bottom: 0,
+		padding-left: 0.25rem,
+		padding-right: 0.25rem,
+		padding-top: 0,
+		inline-item: (
+			margin-bottom: 0,
+			margin-top: 0,
+		),
+		label: (
+			margin-bottom: 0.1875rem,
+			margin-right: 0.25rem,
+			margin-top: 0.1875rem,
+		),
+		form-control-inset: (
+			margin-bottom: 0.125rem,
+			margin-left: 0.25rem,
+			margin-top: 0.1875rem,
+		),
+	),
+	$form-control-tag-group-sm
 );
 
 // Form Grid
@@ -1656,25 +1766,6 @@ $input-group-sm: map-deep-merge(
 		input-group-item: (
 			btn: $input-group-sm-item-btn,
 			btn-monospaced: $input-group-sm-item-btn-monospaced,
-			form-control: (
-				border-radius: clay-enable-rounded($input-border-radius-sm),
-				font-size: $input-font-size-sm,
-				height: auto,
-				line-height: $input-line-height-sm,
-				min-height: $input-height-sm,
-				padding-bottom: 0,
-				padding-left: $input-padding-x-sm,
-				padding-right: $input-padding-x-sm,
-				padding-top: 0,
-				label: (
-					margin-bottom: 0.1875rem,
-					margin-top: 0.1875rem,
-				),
-			),
-			form-control-inset: (
-				margin-bottom: 0.125rem,
-				margin-top: 0.1875rem,
-			),
 			form-file: (
 				btn: (
 					border-radius: clay-enable-rounded($input-border-radius-sm),

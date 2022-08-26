@@ -3,19 +3,26 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import {TInternalStateOnChange, useInternalState} from '@clayui/shared';
+import {InternalDispatch} from '@clayui/shared';
 import classNames from 'classnames';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import ClayDropDown from './DropDown';
 import ClayDropDownMenu from './Menu';
 import Drilldown from './drilldown';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
-	 * Flag to indicate if the menu should be initially active (open).
+	 * Flag to indicate if the menu should be initially open (controlled).
 	 */
 	active?: boolean;
+
+	/**
+	 * Flag to align the DropDown menu within the viewport.
+	 */
+	alignmentByViewport?: React.ComponentProps<
+		typeof ClayDropDownMenu
+	>['alignmentByViewport'];
 
 	/**
 	 * Default position of menu element. Values come from `./Menu`.
@@ -32,9 +39,20 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	>['containerElement'];
 
 	/**
+	 * Property to set the initial value of `active` (uncontrolled).
+	 */
+	defaultActive?: boolean;
+
+	/**
 	 * The unique identifier of the menu that should be active on mount.
 	 */
-	initialActiveMenu: string;
+	defaultActiveMenu?: string;
+
+	/**
+	 * The unique identifier of the menu that should be active on mount.
+	 * @deprecated since v3.51.0 - use `defaultActiveMenu` instead.
+	 */
+	initialActiveMenu?: string;
 
 	/**
 	 * Prop to pass DOM element attributes to <DropDown.Menu />.
@@ -60,9 +78,9 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	offsetFn?: React.ComponentProps<typeof ClayDropDown>['offsetFn'];
 
 	/**
-	 * Callback the will be invoked when the active prop is changed.
+	 * Callback the will be invoked when the active prop is changed (controlled).
 	 */
-	onActiveChange?: TInternalStateOnChange<boolean>;
+	onActiveChange?: InternalDispatch<boolean>;
 
 	/**
 	 * Path to spritemap
@@ -70,21 +88,31 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	spritemap?: string;
 
 	/**
+	 * Flag indicating if the menu should be rendered lazily
+	 */
+	renderMenuOnClick?: React.ComponentProps<
+		typeof ClayDropDown
+	>['renderMenuOnClick'];
+
+	/**
 	 * Element that is used as the trigger which will activate the dropdown on click.
 	 */
 	trigger: React.ReactElement;
 }
 
-interface IHistory {
+type History = {
 	id: string;
 	title: string;
-}
+};
 
-export const ClayDropDownWithDrilldown: React.FunctionComponent<IProps> = ({
+export const ClayDropDownWithDrilldown = ({
 	active,
+	alignmentByViewport,
 	alignmentPosition,
 	className,
 	containerElement,
+	defaultActive,
+	defaultActiveMenu,
 	initialActiveMenu,
 	menuElementAttrs,
 	menuHeight,
@@ -92,25 +120,61 @@ export const ClayDropDownWithDrilldown: React.FunctionComponent<IProps> = ({
 	menus,
 	offsetFn,
 	onActiveChange,
+	renderMenuOnClick,
 	spritemap,
 	trigger,
 }: IProps) => {
-	const [activeMenu, setActiveMenu] = React.useState(initialActiveMenu);
-	const [direction, setDirection] = React.useState<'prev' | 'next'>();
-	const [history, setHistory] = React.useState<Array<IHistory>>([]);
-	const [internalActive, setInternalActive] = useInternalState({
-		onChange: onActiveChange,
-		value: active,
-	});
+	const [activeMenu, setActiveMenu] = useState(
+		defaultActiveMenu ?? initialActiveMenu
+	);
+	const [direction, setDirection] = useState<'prev' | 'next'>();
+	const [history, setHistory] = useState<Array<History>>([]);
+
+	const focusHistory = useRef<Array<HTMLElement>>([]);
+
+	const innerRef = useRef<HTMLDivElement>(null);
+
+	const isKeyboard = useRef<boolean>(false);
 
 	const menuIds = Object.keys(menus);
 
+	useEffect(() => {
+		if (!isKeyboard.current) {
+			return;
+		}
+
+		if (innerRef.current) {
+			if (direction === 'prev') {
+				const [previous] = focusHistory.current.slice(-1);
+
+				focusHistory.current = focusHistory.current.slice(
+					0,
+					focusHistory.current.length - 1
+				);
+
+				previous?.focus();
+			} else {
+				const itemEl = innerRef.current.querySelector<HTMLElement>(
+					'.drilldown-current a.dropdown-item, .drilldown-current button.dropdown-item'
+				);
+
+				focusHistory.current = [
+					...focusHistory.current,
+					document.activeElement as HTMLElement,
+				];
+				itemEl?.focus();
+			}
+		}
+	}, [activeMenu, direction, innerRef, focusHistory, menus]);
+
 	return (
 		<ClayDropDown
-			active={internalActive}
+			active={active}
+			alignmentByViewport={alignmentByViewport}
 			alignmentPosition={alignmentPosition}
 			className={className}
 			containerElement={containerElement}
+			defaultActive={defaultActive}
 			hasRightSymbols
 			menuElementAttrs={{
 				...menuElementAttrs,
@@ -119,10 +183,11 @@ export const ClayDropDownWithDrilldown: React.FunctionComponent<IProps> = ({
 			menuHeight={menuHeight}
 			menuWidth={menuWidth}
 			offsetFn={offsetFn}
-			onActiveChange={setInternalActive}
+			onActiveChange={onActiveChange}
+			renderMenuOnClick={renderMenuOnClick}
 			trigger={trigger}
 		>
-			<Drilldown.Inner>
+			<Drilldown.Inner ref={innerRef}>
 				{menuIds.map((menuKey) => {
 					return (
 						<Drilldown.Menu
@@ -149,12 +214,19 @@ export const ClayDropDownWithDrilldown: React.FunctionComponent<IProps> = ({
 							onForward={(title, childId) => {
 								setHistory([
 									...history,
-									{id: activeMenu, title},
+									{id: activeMenu, title} as History,
 								]);
 
 								setDirection('next');
 
 								setActiveMenu(childId);
+							}}
+							onKeyDown={(event) => {
+								if (event.key !== 'Enter') {
+									isKeyboard.current = false;
+								} else {
+									isKeyboard.current = true;
+								}
 							}}
 							spritemap={spritemap}
 						/>

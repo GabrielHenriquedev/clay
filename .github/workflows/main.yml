@@ -14,18 +14,20 @@ jobs:
             - uses: actions/setup-node@v2
               with:
                 node-version: '16'
-            - name: Clean yarn cache
-              run: yarn cache clean
+            - uses: actions/cache@v2
+              with:
+                path: '**/node_modules'
+                key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
             - name: Install Dependencies
               run: yarn install
             - name: Lint
               run: yarn lint
+            - name: Types
+              run: yarn lint:typescript
             - name: Format
               run: yarn format:check
             - name: Verify Dependencies
               run: yarn checkDeps
-            - name: Clear jest cache
-              run: yarn test --clearCache
             - name: Run Jest
               env:
                   BROWSERSLIST_CONFIG: './packages/browserslist-config-clay/config'
@@ -62,7 +64,7 @@ jobs:
               run: |
                   yarn cache clean
                   yarn install
-                  node ./node_modules/.bin/lerna run --ignore \"clayui.com\" build
+                  yarn build
                   yarn genBuildSize
             - name: Clean directory
               if: ${{ steps.diff.outputs.packages }}
@@ -83,7 +85,7 @@ jobs:
               run: |
                   yarn cache clean
                   yarn install
-                  node ./node_modules/.bin/lerna run --ignore \"clayui.com\" build
+                  yarn build
                   yarn genBuildSize:compare
             - name: Generate Total Size
               if: ${{ steps.diff.outputs.packages }}

@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.70.0](https://github.com/liferay/clay/compare/v3.69.0...v3.70.0) (2022-08-23)
+
+**Note:** Version bump only for package @clayui/shared
+
+# [3.69.0](https://github.com/liferay/clay/compare/v3.68.0...v3.69.0) (2022-08-16)
+
+### Features
+
+-   **@clayui/drop-down:** improves accessibility for virtual cursor ([83bdcb8](https://github.com/liferay/clay/commit/83bdcb879100dfbc68f71c048ecd214471fff0bc))
+
+# [3.67.0](https://github.com/liferay/clay/compare/v3.66.0...v3.67.0) (2022-07-25)
+
+**Note:** Version bump only for package @clayui/shared
+
+# [3.65.0](https://github.com/liferay/clay/compare/v3.64.0...v3.65.0) (2022-07-11)
+
+**Note:** Version bump only for package @clayui/shared
+
+# [3.58.0](https://github.com/liferay/clay/compare/v3.57.0...v3.58.0) (2022-05-23)
+
+### Bug Fixes
+
+-   **@clayui/core:** revalidate the state of intermediate for recursive multiple selection when the state is controlled ([172f849](https://github.com/liferay/clay/commit/172f849fcae41ce05e1c6254267f78f070966e85))
+
+# [3.56.0](https://github.com/liferay/clay/compare/v3.55.0...v3.56.0) (2022-05-09)
+
+**Note:** Version bump only for package @clayui/shared
+
+# [3.55.0](https://github.com/liferay/clay/compare/v3.54.0...v3.55.0) (2022-05-02)
+
+**Note:** Version bump only for package @clayui/shared
+
+# [3.52.0](https://github.com/liferay/clay/compare/v3.51.0...v3.52.0) (2022-04-04)
+
+### Bug Fixes
+
+-   **@clayui/shared:** fix error when controlling focus in React 17.x ([76f5f0d](https://github.com/liferay/clay/commit/76f5f0d964231d8442c780b44f6a320b50b9948b))
+
+# [3.49.0](https://github.com/liferay/clay/compare/v3.48.0...v3.49.0) (2022-03-15)
+
+### Features
+
+-   **@clayui/drop-down:** add new prop to align Menu in viewport ([1c4f19b](https://github.com/liferay/clay/commit/1c4f19b25c34f6ffb9c2c7b9a99732e2a82d5eb5))
+
 # [3.47.0](https://github.com/liferay/clay/compare/v3.46.0...v3.47.0) (2022-02-23)
 
 **Note:** Version bump only for package @clayui/shared

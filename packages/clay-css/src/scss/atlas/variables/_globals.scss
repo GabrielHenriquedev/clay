@@ -33,7 +33,7 @@ $enable-responsive-font-sizes: false !default;
 $enable-rounded: true !default;
 $enable-shadows: true !default;
 $enable-transitions: true !default;
-$enable-validation-icons: true !default;
+$enable-validation-icons: false !default;
 
 // Deprecated, no longer affects any compiled CSS
 
@@ -201,36 +201,16 @@ $spacers: () !default;
 $spacers: map-deep-merge(
 	(
 		0: 0,
-		1: (
-			$spacer * 0.25,
-		),
-		2: (
-			$spacer * 0.5,
-		),
-		3: (
-			$spacer * 1,
-		),
-		4: (
-			$spacer * 1.5,
-		),
-		5: (
-			$spacer * 3,
-		),
-		6: (
-			$spacer * 4.5,
-		),
-		7: (
-			$spacer * 6,
-		),
-		8: (
-			$spacer * 7.5,
-		),
-		9: (
-			$spacer * 9,
-		),
-		10: (
-			$spacer * 10,
-		),
+		1: $spacer * 0.25,
+		2: $spacer * 0.5,
+		3: $spacer * 1,
+		4: $spacer * 1.5,
+		5: $spacer * 3,
+		6: $spacer * 4.5,
+		7: $spacer * 6,
+		8: $spacer * 7.5,
+		9: $spacer * 9,
+		10: $spacer * 10,
 	),
 	$spacers
 );
@@ -263,7 +243,7 @@ $border-radius-sm: 0.1875rem !default; // 3px
 
 $rounded-border-radius: $border-radius !default;
 $rounded-circle-border-radius: 5000px !default;
-$rounded-0-border-radius: 0 !default;
+$rounded-0-border-radius: 0px !default;
 $rounded-pill: 50rem !default;
 
 $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
@@ -284,9 +264,9 @@ $embed-responsive-aspect-ratios: join(
 	$embed-responsive-aspect-ratios
 );
 
-$component-focus-box-shadow: 0 0 0 0.125rem $white#{','} 0 0 0 0.25rem $primary-l1 !default;
-$component-focus-inset-box-shadow: inset 0 0 0 0.125rem $primary-l1#{','} inset 0
-	0 0 0.25rem $white !default;
+$component-focus-box-shadow: #{0 0 0 0.125rem $white, 0 0 0 0.25rem $primary-l1} !default;
+$component-focus-inset-box-shadow: #{inset 0 0 0 0.125rem $primary-l1,
+	inset 0 0 0 0.25rem $white} !default;
 
 $component-active-color: #fff !default;
 $component-active-bg: #0b5fff !default;
@@ -358,9 +338,27 @@ $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
 
 $font-family-base: $font-family-sans-serif !default;
 
-$font-size-base: 1rem !default; // 16px
-$font-size-lg: 1.125rem !default; // 18px
-$font-size-sm: 0.875rem !default; // 14px
+$font-scale: () !default;
+$font-scale: map-merge(
+	(
+		1: 0.625rem,
+		2: 0.75rem,
+		3: 0.875rem,
+		4: 1rem,
+		5: 1.125rem,
+		6: 1.25rem,
+		7: 1.5rem,
+		8: 1.75rem,
+		9: 2rem,
+		10: 2.25rem,
+		11: 2.5rem,
+	),
+	$font-scale
+);
+
+$font-size-base: map-get($font-scale, 4) !default; // 16px
+$font-size-lg: map-get($font-scale, 5) !default; // 18px
+$font-size-sm: map-get($font-scale, 3) !default; // 14px
 
 $font-size-base-mobile: $font-size-base !default;
 $font-size-lg-mobile: $font-size-lg !default;
@@ -408,7 +406,7 @@ $h6-font-size-mobile: null !default;
 
 // Headings h1-h6
 
-$headings-margin-bottom: $spacer * 0.5 !default;
+$headings-margin-bottom: 0.5rem !default;
 $headings-font-family: null !default;
 $headings-font-weight: $font-weight-bold !default;
 $headings-line-height: 1.2 !default;
@@ -503,7 +501,7 @@ $display3-weight: 300 !default;
 $display4-size: 3.5rem !default;
 $display4-weight: 300 !default;
 
-$lead-font-size: $font-size-base * 1.25 !default;
+$lead-font-size: calc(#{$font-size-base} * 1.25) !default;
 $lead-font-weight: 300 !default;
 
 $small-font-size: 80% !default;
@@ -512,7 +510,7 @@ $text-muted: $gray-500 !default;
 
 $blockquote-small-color: $gray-600 !default;
 $blockquote-small-font-size: $small-font-size !default;
-$blockquote-font-size: $font-size-base * 1.25 !default;
+$blockquote-font-size: calc(#{$font-size-base} * 1.25) !default;
 
 $hr-border-color: rgba($black, 0.1) !default;
 $hr-border-width: $border-width !default;

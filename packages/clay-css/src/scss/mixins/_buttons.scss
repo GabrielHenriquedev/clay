@@ -387,8 +387,6 @@
 		$active-class: setter(map-get($map, active-class), ());
 		$active-class: map-merge($active, $active-class);
 
-		$active-class-after: setter(map-get($map, active-class-after), ());
-
 		$show: map-deep-merge($active-class, map-get($map, show));
 
 		$disabled: setter(map-get($map, disabled), ());
@@ -432,8 +430,6 @@
 					),
 			)
 		);
-
-		$disabled-focus: setter(map-get($disabled, focus), ());
 
 		$nested-disabled-active: setter(map-get($disabled, active), ());
 		$disabled-active: setter(map-get($map, disabled-active), ());
@@ -553,13 +549,15 @@
 		$mobile-c-inner: map-merge(
 			(
 				enabled:
-					setter(
-						if(
-							variable-exists(enable-c-inner),
-							$enable-c-inner,
-							$cadmin-enable-c-inner
-						),
-						true
+					if(
+						variable-exists(enable-c-inner),
+						$enable-c-inner,
+						$cadmin-enable-c-inner
+							if(
+								variable-exists(cadmin-enable-c-inner),
+								$cadmin-enable-c-inner,
+								true
+							)
 					),
 				margin-bottom: math-sign(map-get($mobile, padding-bottom)),
 				margin-left: math-sign(map-get($mobile, padding-left)),
@@ -569,28 +567,23 @@
 			$mobile-c-inner
 		);
 
-		$unset: setter(
-			if(
-				variable-exists(clay-unset-placeholder),
-				$clay-unset-placeholder,
-				$cadmin-clay-unset-placeholder
-			),
+		$loading-animation: setter(
+			map-get($map, loading-animation),
 			clay-unset-placeholder
 		);
-
-		$loading-animation: setter(map-get($map, loading-animation), $unset);
 
 		$c-inner: setter(map-get($map, c-inner), ());
 		$c-inner: map-merge(
 			(
 				enabled:
-					setter(
+					if(
+						variable-exists(enable-c-inner),
+						$enable-c-inner,
 						if(
-							variable-exists(enable-c-inner),
-							$enable-c-inner,
-							$cadmin-enable-c-inner
-						),
-						true
+							variable-exists(cadmin-enable-c-inner),
+							$cadmin-enable-c-inner,
+							true
+						)
 					),
 				margin-bottom: math-sign(map-get($map, padding-bottom)),
 				margin-left: math-sign(map-get($map, padding-left)),
@@ -663,6 +656,22 @@
 					@include clay-css(map-deep-get($map, focus, after));
 				}
 
+				&:hover {
+					@include clay-css(map-deep-get($map, focus, hover));
+
+					&::before {
+						@include clay-css(
+							map-deep-get($map, focus, hover, before)
+						);
+					}
+
+					&::after {
+						@include clay-css(
+							map-deep-get($map, focus, hover, after)
+						);
+					}
+				}
+
 				.inline-item {
 					@include clay-css(map-get($focus, inline-item));
 				}
@@ -732,7 +741,11 @@
 				}
 
 				&::after {
-					@include clay-css($active-class-after);
+					@include clay-css(map-get($map, active-class-after));
+				}
+
+				&:focus {
+					@include clay-css(map-deep-get($map, active-class, focus));
 				}
 
 				.inline-item {
@@ -771,7 +784,7 @@
 				}
 
 				&:focus {
-					@include clay-css($disabled-focus);
+					@include clay-css(map-get($disabled, focus));
 
 					&::before {
 						@include clay-css(

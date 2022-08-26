@@ -14,7 +14,7 @@ import React from 'react';
 import ClayCard from './Card';
 import {ClayCardHorizontal} from './CardHorizontal';
 
-interface IProps extends React.BaseHTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.BaseHTMLAttributes<HTMLDivElement> {
 	actions?: React.ComponentProps<typeof ClayDropDownWithItems>['items'];
 
 	/**
@@ -63,7 +63,7 @@ interface IProps extends React.BaseHTMLAttributes<HTMLDivElement> {
 	title: string;
 }
 
-export const ClayCardWithHorizontal: React.FunctionComponent<IProps> = ({
+export const ClayCardWithHorizontal = ({
 	actions,
 	checkboxProps = {},
 	disabled,

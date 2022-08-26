@@ -8,7 +8,7 @@ import {LinkOrButton} from '@clayui/shared';
 import classNames from 'classnames';
 import React from 'react';
 
-interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	/**
 	 * Flag to indicate if `active` class should be applied.
 	 */
@@ -35,7 +35,7 @@ interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	spritemap?: string;
 }
 
-export const NavLink: React.FunctionComponent<IProps> = ({
+export const NavLink = ({
 	active,
 	children,
 	className,

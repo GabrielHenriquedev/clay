@@ -6,7 +6,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Flag to signify that `panel-group-fluid-first` class should be added.
 	 * This class generally should be used inside card or sheet
@@ -37,7 +37,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	small?: boolean;
 }
 
-const ClayPanelGroup: React.FunctionComponent<IProps> = ({
+const ClayPanelGroup = ({
 	children,
 	className,
 	fluid,

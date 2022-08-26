@@ -1,0 +1,113 @@
+---
+title: 'Loading Indicator'
+description: 'The loading indicator shows the user that an external process, like a connection, is being executed.'
+lexiconDefinition: 'https://liferay.design/lexicon/core-components/loading-indicator/'
+packageNpm: '@clayui/loading-indicator'
+---
+
+import {
+	LoadingIndicator,
+	LoadingIndicatorSquares,
+	LoadingIndicatorPrimary,
+	LoadingIndicatorSecondary,
+	LoadingIndicatorLight,
+	LoadingIndicatorExtraSmall,
+	LoadingIndicatorSmall,
+	LoadingIndicatorMedium,
+	LoadingIndicatorLarge,
+} from '$packages/clay-loading-indicator/docs/index';
+
+<div class="nav-toc-absolute">
+<div class="nav-toc">
+
+-   [Shapes](#shapes)
+    -   [Circle](#circle)
+    -   [Squares](#squares)
+-   [Display Types](#display-types)
+    -   [Primary](#primary)
+    -   [Secondary](#secondary)
+    -   [Light](#light)
+-   [Sizes](#sizes)
+    -   [Extra Small](#extra-small)
+    -   [Small](#small)
+    -   [Medium](#medium)
+    -   [Large](#large)
+
+</div>
+</div>
+
+## Shapes
+
+The loading indicator takes on the `currentColor` and `font-size` by default.
+
+### Circle
+
+The circle indicator is the default shape of the loading indicator. It should be used with small components such as badges, buttons, inputs, tables rows, etc.
+
+<div class="clay-site-alert alert alert-info">
+	It should be used with `size` `xs` and `sm`. The `displayType` should be
+	`secondary` or `light`.
+</div>
+
+<LoadingIndicator />
+
+### Squares
+
+The squares indicator uses 2 square shapes taken from the Liferay logo. It helps us include some details from the brand in our product interfaces. It should be used only for bigger components such as cards, modals, sidebars, dashboards, etc. Enable the squares indicator by setting the property [shape](#api-shape) to `squares`.
+
+<div class="clay-site-alert alert alert-info">
+	It should be used with `size` `md` and `lg`. The `displayType` should be
+	`primary` or `light`.
+</div>
+
+<LoadingIndicatorSquares />
+
+## Display Types
+
+The loading indicator uses the `currentColor` by default. You can force the state/color on the loading indicator by passing one of the three variants, `primary`, `secondary`, and `light`, to the [displayType](#api-displayType) property.
+
+### Primary
+
+Fix the color of the loading indicator to be the primary color by setting the [displayType](#api-displayType) to `primary`.
+
+<LoadingIndicatorPrimary />
+
+### Secondary
+
+Fix the color of the loading indicator to be the secondary color by setting the [displayType](#api-displayType) to `secondary`.
+
+<LoadingIndicatorSecondary />
+
+### Light
+
+Fix the color of the loading indicator to be the light color by setting the [displayType](#api-displayType) to `light`. It allows the indicator to be more accessible in some cases.
+
+<LoadingIndicatorLight />
+
+## Sizes
+
+The loading indicator ships with four sizes, `xs`, `sm`, `md`, and `lg`. It inherits the parent's `font-size` by default.
+
+### Extra Small
+
+Fix the loading indicator `font-size` to be 10px by setting the [`size`](#api-size) property to `xs`.
+
+<LoadingIndicatorExtraSmall />
+
+### Small
+
+Fix the loading indicator `font-size` to be 16px by setting the [`size`](#api-size) property to `sm`.
+
+<LoadingIndicatorSmall />
+
+### Medium
+
+Fix the loading indicator `font-size` to be 32px by setting the [`size`](#api-size) property to `md`.
+
+<LoadingIndicatorMedium />
+
+### Large
+
+Fix the loading indicator `font-size` to be 64px by setting the [`size`](#api-size) property to `lg`.
+
+<LoadingIndicatorLarge />

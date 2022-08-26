@@ -196,6 +196,7 @@ $cadmin-alert-indicator: () !default;
 $cadmin-alert-indicator: map-deep-merge(
 	(
 		font-size: $cadmin-alert-indicator-font-size,
+		line-height: 1,
 		lead: (
 			margin-left: $cadmin-alert-lead-spacer-x,
 		),
@@ -420,6 +421,7 @@ $cadmin-alert-notification-sm-down: map-merge(
 $cadmin-alert-autofit-row: () !default;
 $cadmin-alert-autofit-row: map-deep-merge(
 	(
+		align-items: baseline,
 		margin-left: -4px,
 		margin-right: -4px,
 		width: auto,

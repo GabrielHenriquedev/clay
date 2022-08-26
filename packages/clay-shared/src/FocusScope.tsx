@@ -3,12 +3,20 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import React, {useContext} from 'react';
+import React, {Children, useContext} from 'react';
 
 import {Keys} from './Keys';
 import {useFocusManagement} from './useFocusManagement';
 
-interface IProps {
+type Children = React.ReactElement & {
+	ref?: React.MutableRefObject<HTMLElement>;
+};
+
+type ChildrenFunction =
+	| Children
+	| ((focusManager: ReturnType<typeof useFocusManagement>) => Children);
+
+type Props = {
 	/**
 	 * Flag indicates whether the focus will also be controlled with the right
 	 * and left arrow keys.
@@ -21,10 +29,10 @@ interface IProps {
 	 */
 	arrowKeysUpDown?: boolean;
 
-	children: React.ReactElement & {
-		ref?: React.MutableRefObject<HTMLElement>;
-	};
-}
+	children: ChildrenFunction;
+
+	onFocus?: (element: HTMLElement) => void;
+};
 
 /**
  * The context helps to identify if the FocusScope is being declared nested, to
@@ -38,11 +46,12 @@ const FocusConflictContext = React.createContext<boolean>(false);
  * for children's key down events, since the component handles the `onKeyDown`
  * event.
  */
-export const FocusScope: React.FunctionComponent<IProps> = ({
+export const FocusScope = ({
 	arrowKeysLeftRight = false,
 	arrowKeysUpDown = true,
 	children,
-}) => {
+	onFocus,
+}: Props) => {
 	const elRef = React.useRef<null | HTMLElement>(null);
 	const focusManager = useFocusManagement(elRef);
 
@@ -50,28 +59,44 @@ export const FocusScope: React.FunctionComponent<IProps> = ({
 
 	const onKeyDown = (event: React.KeyboardEvent<any>) => {
 		const {key, shiftKey} = event;
+
 		if (
 			(arrowKeysUpDown && key === Keys.Down) ||
 			(arrowKeysLeftRight && key === Keys.Right) ||
 			(key === Keys.Tab && !shiftKey)
 		) {
-			if (focusManager.focusNext()) {
+			const next = focusManager.focusNext();
+
+			if (next) {
 				event.preventDefault();
+
+				if (onFocus) {
+					onFocus(next);
+				}
 			}
 		} else if (
 			(arrowKeysUpDown && key === Keys.Up) ||
 			(arrowKeysLeftRight && key === Keys.Left) ||
 			(key === Keys.Tab && shiftKey)
 		) {
-			if (focusManager.focusPrevious()) {
+			const previous = focusManager.focusPrevious();
+
+			if (previous) {
 				event.preventDefault();
+
+				if (onFocus) {
+					onFocus(previous);
+				}
 			}
 		}
 	};
 
+	const child =
+		typeof children === 'function' ? children(focusManager) : children;
+
 	return (
 		<FocusConflictContext.Provider value>
-			{React.cloneElement(children, {
+			{React.cloneElement(child, {
 				onKeyDown: (event: React.KeyboardEvent) => {
 					if (hasParentFocus) {
 						event.stopPropagation();
@@ -79,15 +104,15 @@ export const FocusScope: React.FunctionComponent<IProps> = ({
 
 					// If the element already exists a `onKeyDown` event should
 					// invoke it as well.
-					if (children.props.onKeyDown) {
-						children.props.onKeyDown(event);
+					if (child.props.onKeyDown) {
+						child.props.onKeyDown(event);
 					}
 					onKeyDown(event);
 				},
 				ref: (r: HTMLElement) => {
 					if (r) {
 						elRef.current = r;
-						const {ref} = children;
+						const {ref} = child;
 						if (ref) {
 							if (typeof ref === 'object') {
 								ref.current = r;

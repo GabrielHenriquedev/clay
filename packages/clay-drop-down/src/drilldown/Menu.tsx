@@ -29,24 +29,27 @@ export interface IProps {
 	items: Array<IItem>;
 	onBack: () => void;
 	onForward: (title: string, child: string) => void;
+	onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
 	spritemap?: string;
 }
 
-const DrilldownMenu: React.FunctionComponent<IProps> = ({
+const DrilldownMenu = ({
 	active,
 	direction,
 	header,
 	items,
 	onBack,
 	onForward,
+	onKeyDown,
 	spritemap,
-}) => {
+}: IProps) => {
 	const initialClasses = classNames('transitioning', {
 		'drilldown-prev-initial': direction === 'prev',
 	});
 
 	return (
 		<CSSTransition
+			aria-hidden={active}
 			className={classNames('drilldown-item', {
 				'drilldown-current': active,
 			})}
@@ -70,6 +73,7 @@ const DrilldownMenu: React.FunctionComponent<IProps> = ({
 							<ClayButtonWithIcon
 								className="component-action dropdown-item-indicator-start"
 								onClick={onBack}
+								onKeyDown={onKeyDown}
 								spritemap={spritemap}
 								symbol="angle-left"
 							/>
@@ -84,7 +88,7 @@ const DrilldownMenu: React.FunctionComponent<IProps> = ({
 				)}
 
 				{items && (
-					<ul className="inline-scroller">
+					<ul className="inline-scroller" role="menu">
 						{items.map(
 							(
 								{
@@ -101,7 +105,7 @@ const DrilldownMenu: React.FunctionComponent<IProps> = ({
 								type === 'divider' ? (
 									<Divider key={`${j}-divider`} />
 								) : (
-									<li key={`${j}-${title}`}>
+									<li key={`${j}-${title}`} role="none">
 										<LinkOrButton
 											{...other}
 											buttonDisplayType="unstyled"
@@ -121,6 +125,8 @@ const DrilldownMenu: React.FunctionComponent<IProps> = ({
 													onForward(title, child);
 												}
 											}}
+											onKeyDown={onKeyDown}
+											role="menuitem"
 										>
 											{symbol && (
 												<span className="dropdown-item-indicator-start">

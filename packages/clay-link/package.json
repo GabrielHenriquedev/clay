@@ -1,6 +1,6 @@
 {
 	"name": "@clayui/link",
-	"version": "3.45.0",
+	"version": "3.56.0",
 	"description": "ClayLink component",
 	"license": "BSD-3-Clause",
 	"repository": "https://github.com/liferay/clay",
@@ -17,8 +17,8 @@
 	],
 	"scripts": {
 		"build": "babel src --root-mode upward --out-dir lib --extensions .ts,.tsx",
-		"build:types": "tsc --project ./tsconfig.declarations.json",
-		"prepublishOnly": "yarn build && yarn build:types",
+		"buildTypes": "tsc --project ./tsconfig.declarations.json",
+		"prepublishOnly": "yarn build && yarn buildTypes",
 		"test": "jest --config ../../jest.config.js"
 	},
 	"keywords": [

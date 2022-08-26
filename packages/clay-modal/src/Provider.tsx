@@ -10,11 +10,13 @@ import {Size, Status} from './types';
 import {useModal} from './useModal';
 
 enum Action {
-	Close = 0,
-	Open = 1,
+	Close = 'CLOSE',
+	Open = 'OPEN',
 }
 
 interface IProps {
+	children: React.ReactNode;
+
 	/**
 	 * The path to the SVG spritemap file containing the icons.
 	 */
@@ -38,7 +40,7 @@ type TState = {
 	 * - middle
 	 * - last
 	 */
-	footer: Array<React.ReactElement | undefined>;
+	footer?: Array<React.ReactElement | undefined>;
 
 	/**
 	 * Renders an element in the modal header.
@@ -61,7 +63,9 @@ type TState = {
 	url?: string;
 };
 
-type TAction = {type: Action.Open; payload: TState} | {type: Action.Close};
+type TAction =
+	| {type: Action.Open | 1; payload: TState}
+	| {type: Action.Close | 0};
 
 type TProvider = [TState & {onClose: () => void}, React.Dispatch<TAction>];
 
@@ -77,8 +81,10 @@ const reducer = (
 	action: TAction
 ): TState & {visible: boolean} => {
 	switch (action.type) {
+		case 1:
 		case Action.Open:
 			return {...action.payload, visible: true};
+		case 0:
 		case Action.Close:
 			return initialState;
 		default:
@@ -88,10 +94,7 @@ const reducer = (
 
 const Context = React.createContext<TProvider>([initialState, () => {}]);
 
-const ClayModalProvider: React.FunctionComponent<IProps> = ({
-	children,
-	spritemap,
-}) => {
+const ClayModalProvider = ({children, spritemap}: IProps) => {
 	const [{visible, ...otherState}, dispatch] = React.useReducer(
 		reducer,
 		initialState
@@ -99,7 +102,7 @@ const ClayModalProvider: React.FunctionComponent<IProps> = ({
 	const {observer, onClose} = useModal({
 		onClose: () => dispatch({type: Action.Close}),
 	});
-	const {body, center, footer, header, size, status, url} = otherState;
+	const {body, center, footer = [], header, size, status, url} = otherState;
 	const [first, middle, last] = footer;
 	const state = {
 		...otherState,
@@ -116,13 +119,15 @@ const ClayModalProvider: React.FunctionComponent<IProps> = ({
 					spritemap={spritemap}
 					status={status}
 				>
-					<ClayModal.Header>{header}</ClayModal.Header>
+					{header && <ClayModal.Header>{header}</ClayModal.Header>}
 					<ClayModal.Body url={url}>{body}</ClayModal.Body>
-					<ClayModal.Footer
-						first={first}
-						last={last}
-						middle={middle}
-					/>
+					{!!footer.length && (
+						<ClayModal.Footer
+							first={first}
+							last={last}
+							middle={middle}
+						/>
+					)}
 				</ClayModal>
 			)}
 			<Context.Provider value={[state, dispatch]}>

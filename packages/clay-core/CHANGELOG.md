@@ -3,6 +3,143 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.70.0](https://github.com/liferay/clay/compare/v3.69.0...v3.70.0) (2022-08-23)
+
+### Features
+
+-   **@clayui/core:** Add list virtualization pattern in collection ([cd3d101](https://github.com/liferay/clay/commit/cd3d1015f134c64dd7445e16949f678215ac7b31))
+-   **@clayui/core:** adds virtualization support to VerticalBar.Bar ([de5679e](https://github.com/liferay/clay/commit/de5679ef7a2f1e0dfe7afb06d8400b53e211d3d5))
+
+# [3.69.0](https://github.com/liferay/clay/compare/v3.68.0...v3.69.0) (2022-08-16)
+
+**Note:** Version bump only for package @clayui/core
+
+# [3.68.0](https://github.com/liferay/clay/compare/v3.67.0...v3.68.0) (2022-08-01)
+
+**Note:** Version bump only for package @clayui/core
+
+# [3.67.0](https://github.com/liferay/clay/compare/v3.66.0...v3.67.0) (2022-07-25)
+
+**Note:** Version bump only for package @clayui/core
+
+# [3.66.0](https://github.com/liferay/clay/compare/v3.65.2...v3.66.0) (2022-07-20)
+
+**Note:** Version bump only for package @clayui/core
+
+## [3.65.2](https://github.com/liferay/clay/compare/v3.65.1...v3.65.2) (2022-07-19)
+
+**Note:** Version bump only for package @clayui/core
+
+## [3.65.1](https://github.com/liferay/clay/compare/v3.65.0...v3.65.1) (2022-07-11)
+
+**Note:** Version bump only for package @clayui/core
+
+# [3.65.0](https://github.com/liferay/clay/compare/v3.64.0...v3.65.0) (2022-07-11)
+
+### Features
+
+-   **@clayui/core:** adds new `onItemMove` API ([3815731](https://github.com/liferay/clay/commit/3815731dbf304923970802176c56342a563c6194))
+
+# [3.64.0](https://github.com/liferay/clay/compare/v3.63.0...v3.64.0) (2022-07-04)
+
+### Features
+
+-   **@clayui/core:** add new `noHover` property to remove item hover ([cf52960](https://github.com/liferay/clay/commit/cf52960b79272fa90702854d05e0f3eb48c87494))
+-   **@clayui/core:** adds new `active` property to TreeView.Item ([9c3cc1c](https://github.com/liferay/clay/commit/9c3cc1ceb7b874f963f23eab0cb621ffa87265bd))
+-   **@clayui/core:** adds new API to control node expand state in TreeView ([216fc36](https://github.com/liferay/clay/commit/216fc36524b2d01bd61d4a3a7e7e9c34ad094ffc))
+
+# [3.62.0](https://github.com/liferay/clay/compare/v3.61.0...v3.62.0) (2022-06-20)
+
+**Note:** Version bump only for package @clayui/core
+
+# [3.61.0](https://github.com/liferay/clay/compare/v3.60.1...v3.61.0) (2022-06-13)
+
+### Bug Fixes
+
+-   **@clayui/core:** fixes error when there is no box-shadow in the panel when position the VerticalBar on the left side ([9121847](https://github.com/liferay/clay/commit/91218470d9b1600953c06b68e390af71f3dacfe5))
+
+# [3.60.0](https://github.com/liferay/clay/compare/v3.59.0...v3.60.0) (2022-06-06)
+
+### Features
+
+-   **@clayui/core:** adds the implementation of the Vertical Bar component ([23a1637](https://github.com/liferay/clay/commit/23a1637e8ebac46d9815d334bae1296736979542))
+
+# [3.58.0](https://github.com/liferay/clay/compare/v3.57.0...v3.58.0) (2022-05-23)
+
+### Bug Fixes
+
+-   **@clayui/core:** revalidate the state of intermediate for recursive multiple selection when the state is controlled ([172f849](https://github.com/liferay/clay/commit/172f849fcae41ce05e1c6254267f78f070966e85))
+
+### Features
+
+-   **@clayui/core:** adds new `onSelect` API to TreeView ([aca1322](https://github.com/liferay/clay/commit/aca132291f4ead5bded706e9585af4197c0b5e42))
+-   **@clayui/core:** adds OOTB support for Text component in TreeView.Item/ItemStack ([cf32759](https://github.com/liferay/clay/commit/cf327597e8e3afbe6f78390008ea9aa6b25612ff))
+-   **@clayui/core:** calls onKeyDown on Item and ItemStack if defined ([e5dfbf1](https://github.com/liferay/clay/commit/e5dfbf15024c6a8c85be78ac4d9a00ae8be56d06))
+
+# [3.57.0](https://github.com/liferay/clay/compare/v3.56.0...v3.57.0) (2022-05-16)
+
+### Features
+
+-   **@clayui/core:** adds new API to expand node via double click in TreeView ([82cea51](https://github.com/liferay/clay/commit/82cea51363cfde5a27ce01573296e10e8e5bfc73))
+
+# [3.56.0](https://github.com/liferay/clay/compare/v3.55.0...v3.56.0) (2022-05-09)
+
+### Bug Fixes
+
+-   updates broken storybook links in documentation ([22fc1c6](https://github.com/liferay/clay/commit/22fc1c684a92ada9aac73c9c7090c6cbca960f9d))
+
+# [3.55.0](https://github.com/liferay/clay/compare/v3.54.0...v3.55.0) (2022-05-02)
+
+### Bug Fixes
+
+-   **@clayui/core:** the Heading tag follows the level definition ([956bc0b](https://github.com/liferay/clay/commit/956bc0b11f24ce55ef9f34b82dc395e4a4f40e20))
+-   **clayui/chore:** Update index.ts to export both components ([a823b41](https://github.com/liferay/clay/commit/a823b411525547fc81f2d1f22650607e4afc58b5))
+-   **clayui/chore:** Update stories in Heading and Text ([c870a2c](https://github.com/liferay/clay/commit/c870a2c111ce58b1c3e63517ddb82ac8f8c13d03))
+-   **clayui/core:** Change export type to inline one ([01e0e35](https://github.com/liferay/clay/commit/01e0e35a402e3c81e0919e8807aa45939a308dfc))
+-   **clayui/core:** SF ([5065c80](https://github.com/liferay/clay/commit/5065c80485c350d577dd212916c007acd8461f6f))
+-   **clayui/core:** SF ([1602a02](https://github.com/liferay/clay/commit/1602a02fafa983c717ded5213b9b32c2fb9a0fb5))
+-   **clayui/core:** Some code refactor. Pending some changes ([d1eed16](https://github.com/liferay/clay/commit/d1eed16a3d9717a921665ed3bcc247970a45585f))
+
+### Features
+
+-   **@clayui/core:** Adding Text component and Heading test cases ([c3a542c](https://github.com/liferay/clay/commit/c3a542c0472680d7d70ec120b53e305df185097c))
+-   **@clayui/core:** Adding Text test cases ([0598b77](https://github.com/liferay/clay/commit/0598b771a652e86156e0a0abd404750e08a59bde))
+-   Adding font-style monospace property ([43f16e2](https://github.com/liferay/clay/commit/43f16e2fbed04afef1be8598bee0772a5ce886b3))
+-   **clayui/core:** Adding Heading and Text documentation ([0292834](https://github.com/liferay/clay/commit/02928348f0b1c657b773c2eb33ba9fc67d24fb83))
+-   **clayui/core:** Delete React.FC. Adding tests related to truncate, color and default props ([d81e5db](https://github.com/liferay/clay/commit/d81e5db193e0d7514b33648ba6036efe39811560))
+-   **clayui/core:** New Text API to determine the test tag. Coding refactor and update interface to type props ([05589b9](https://github.com/liferay/clay/commit/05589b97ab1c7ac0c525e60173198c2114aca702))
+
+# [3.53.0](https://github.com/liferay/clay/compare/v3.52.0...v3.53.0) (2022-04-12)
+
+### Features
+
+-   **@clayui/core:** adds the new OverlayMask component ([a9b40cb](https://github.com/liferay/clay/commit/a9b40cb11862669d63b6fc724e0b210215d2bec7))
+
+# [3.52.0](https://github.com/liferay/clay/compare/v3.51.0...v3.52.0) (2022-04-04)
+
+**Note:** Version bump only for package @clayui/core
+
+# [3.50.0](https://github.com/liferay/clay/compare/v3.49.0...v3.50.0) (2022-03-21)
+
+### Bug Fixes
+
+-   **@clayui/core:** fixes error when removing parent's intermediate state when item's sibling is intermediate ([782ea42](https://github.com/liferay/clay/commit/782ea426feae8a4e89c24585c16146f4f14a5efa))
+
+# [3.49.0](https://github.com/liferay/clay/compare/v3.48.0...v3.49.0) (2022-03-15)
+
+### Bug Fixes
+
+-   **@clayui/core:** fix error when not rendering component after string with TreeView.Item ([1d275a8](https://github.com/liferay/clay/commit/1d275a8c948dfcfab9206a03b59c6c9d948ce29f))
+
+### Features
+
+-   **@clayui/core:** adds new properties to set the initial value of properties that can be controlled ([bdfb6b0](https://github.com/liferay/clay/commit/bdfb6b063cc4cd00365609d2f7ce0f525ac16045))
+-   **@clayui/drop-down:** make it possible to render the menu lazily ([1e4e565](https://github.com/liferay/clay/commit/1e4e5655503645358245a200e72c8ca711f72956))
+
+# [3.48.0](https://github.com/liferay/clay/compare/v3.47.0...v3.48.0) (2022-03-07)
+
+**Note:** Version bump only for package @clayui/core
+
 # [3.47.0](https://github.com/liferay/clay/compare/v3.46.0...v3.47.0) (2022-02-23)
 
 ### Bug Fixes

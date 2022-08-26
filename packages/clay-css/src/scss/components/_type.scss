@@ -176,10 +176,11 @@ strong {
 // Reference Mark
 
 .reference-mark {
-	display: inline-block;
-	font-size: $reference-mark-font-size;
-	position: relative;
-	vertical-align: $reference-mark-vertical-align;
+	@include clay-css($reference-mark);
+
+	&.lexicon-icon {
+		@include clay-css(map-get($reference-mark, lexicon-icon));
+	}
 }
 
 // Kbd
@@ -188,7 +189,7 @@ strong {
 	@include clay-css($c-kbd-group);
 
 	> .c-kbd {
-		@include clay-css(setter(map-get($c-kbd-group, c-kbd), ()));
+		@include clay-css(map-get($c-kbd-group, c-kbd));
 	}
 }
 
@@ -253,7 +254,7 @@ strong {
 	@include clay-css($c-kbd-group-sm);
 
 	> .c-kbd {
-		@include clay-css(setter(map-get($c-kbd-group-sm, c-kbd), ()));
+		@include clay-css(map-get($c-kbd-group-sm, c-kbd));
 	}
 }
 
@@ -272,7 +273,7 @@ strong {
 	@include clay-css($c-kbd-group-lg);
 
 	> .c-kbd {
-		@include clay-css(setter(map-get($c-kbd-group-lg, c-kbd), ()));
+		@include clay-css(map-get($c-kbd-group-lg, c-kbd));
 	}
 }
 

@@ -17,7 +17,10 @@ import {Icons, TreeViewContext} from './context';
 import {ITreeProps, useTree} from './useTree';
 
 interface ITreeViewProps<T>
-	extends Omit<React.HTMLAttributes<HTMLUListElement>, 'children'>,
+	extends Omit<
+			React.HTMLAttributes<HTMLUListElement>,
+			'children' | 'onSelect'
+		>,
 		ITreeProps<T>,
 		ICollectionProps<T> {
 	/**
@@ -38,6 +41,11 @@ interface ITreeViewProps<T>
 	dragAndDropContext?: Window & typeof globalThis;
 
 	/**
+	 * Flag to expand the node's children when double-clicking the node.
+	 */
+	expandDoubleClick?: boolean;
+
+	/**
 	 * Flag to expand child nodes when a parent node is checked.
 	 */
 	expandOnCheck?: boolean;
@@ -47,10 +55,15 @@ interface ITreeViewProps<T>
 	 */
 	expanderClassName?: string;
 
-	/*
+	/**
 	 * Flag to modify Node expansion state icons.
 	 */
 	expanderIcons?: Icons;
+
+	/**
+	 * Callback is called when an item is about to be moved elsewhere in the tree.
+	 */
+	onItemMove?: (item: T, parentItem: T) => void;
 
 	/**
 	 * When a tree is very large, loading items (nodes) asynchronously is preferred to
@@ -58,6 +71,13 @@ interface ITreeViewProps<T>
 	 * the item is a leaf node of the tree.
 	 */
 	onLoadMore?: (item: T) => Promise<unknown>;
+
+	/**
+	 * Callback called whenever an item is selected. Similar to the `onSelectionChange`
+	 * callback but instead of passing the selected keys it is called with the current
+	 * item being selected.
+	 */
+	onSelect?: (item: T) => void;
 
 	/**
 	 * Calback is called when the user presses the R or F2 hotkey.
@@ -87,9 +107,13 @@ export function TreeView<T>(props: ITreeViewProps<T>): JSX.Element & {
 export function TreeView<T>({
 	children,
 	className,
+	defaultExpandedKeys,
+	defaultItems,
+	defaultSelectedKeys,
 	displayType = 'light',
 	dragAndDrop = false,
 	dragAndDropContext = window,
+	expandDoubleClick = false,
 	expandedKeys,
 	expanderClassName,
 	expanderIcons,
@@ -97,9 +121,11 @@ export function TreeView<T>({
 	items,
 	nestedKey = 'children',
 	onExpandedChange,
+	onItemMove,
 	onItemsChange,
 	onLoadMore,
 	onRenameItem,
+	onSelect,
 	onSelectionChange,
 	selectedKeys,
 	selectionHydrationMode = 'hydrate-first',
@@ -110,6 +136,9 @@ export function TreeView<T>({
 	const rootRef = React.useRef(null);
 
 	const state = useTree<T>({
+		defaultExpandedKeys,
+		defaultItems,
+		defaultSelectedKeys,
 		expandedKeys,
 		items,
 		nestedKey,
@@ -130,12 +159,15 @@ export function TreeView<T>({
 	const context = {
 		childrenRoot: childrenRootRef,
 		dragAndDrop,
+		expandDoubleClick,
 		expandOnCheck,
 		expanderClassName,
 		expanderIcons,
 		nestedKey,
+		onItemMove,
 		onLoadMore,
 		onRenameItem,
+		onSelect,
 		rootRef,
 		selectionMode,
 		showExpanderOnHover,
@@ -146,10 +178,14 @@ export function TreeView<T>({
 		<FocusScope>
 			<ul
 				{...otherProps}
-				className={classNames('treeview', className, {
-					[`treeview-${displayType}`]: displayType,
-					'show-component-expander-on-hover': showExpanderOnHover,
-				})}
+				className={classNames(
+					'treeview show-quick-actions-on-hover',
+					className,
+					{
+						[`treeview-${displayType}`]: displayType,
+						'show-component-expander-on-hover': showExpanderOnHover,
+					}
+				)}
 				ref={rootRef}
 				role="tree"
 			>

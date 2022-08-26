@@ -4,7 +4,13 @@
 		"allowJs": false,
 		"declaration": true,
 		"emitDeclarationOnly": true,
-		"noEmit": false
+		"noEmit": false,
+		"removeComments": false
 	},
-	"exclude": ["**/__tests__/**"]
+	"exclude": [
+		"node_modules",
+		"packages/**/lib",
+		"packages/generator-clay-component",
+		"**/__tests__/**"
+	]
 }

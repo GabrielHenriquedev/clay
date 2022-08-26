@@ -7,8 +7,13 @@ lexiconDefinition: 'https://liferay.design/lexicon/foundations/typography/'
 <div class="nav-toc">
 
 -   [Sizes](#css-text-sizes)
+    -   [Sass API](#css-text-sizes-sass-api)
 -   [Weights](#css-text-weights)
 -   [Styles](#css-text-styles)
+-   [Alignment](#css-text-alignment)
+-   [Wrap](#css-text-wrap)
+-   [Transform](#css-text-transform)
+-   [Miscellaneous](#css-text-misc)
 
 </div>
 </div>
@@ -110,6 +115,39 @@ Utility classes for changing the `font-size` of text.
 <span class="text-1">The quick brown fox jumped over the lazy dog.</span>
 ```
 
+### Text Sizes Sass API(#css-text-sizes-sass-api)
+
+The map `$font-sizes` allows generating any number of text size variants. If a key starts with `.`, `#` or `%`, Clay will output it as is, otherwise we will prepend `.` to the key (e.g., `.text-100`).
+
+```scss{expanded}
+$bg-theme-colors: (
+    text-100: (
+        font-size: 100px,
+    ),
+    '%text-200': (
+        font-size: 200px,
+    ),
+    '.text-200': (
+        extend: '%text-200',
+    ),
+    '.text-250': (
+        extend: '%text-200',
+    ),
+);
+```
+
+Outputs:
+
+```css{expanded}
+.text-100 {
+    font-size: 100px;
+}
+
+.text-200, .text-250 {
+    font-size: 200px;
+}
+```
+
 ## Weights(#css-text-weights)
 
 Utility classes for changing the `font-weight` of text.
@@ -209,3 +247,125 @@ Utility classes for changing the `font-style` of text.
 	>The quick brown fox jumped over the lazy dog.</span
 >
 ```
+
+## Alignment(#css-text-alignment)
+
+Text Alignment Utilities set the `text-align` property. Only the left, right, and center values have responsive alignment, use the format `text-{sm|md|lg|xl}-{left|right|center}` to target specific screen sizes (e.g., `text-md-center`).
+
+<div class="sheet-example">
+	<div class="table-responsive">
+		<table class="table table-autofit table-nowrap">
+			<thead>
+				<tr>
+					<th>Utility</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>text-justify</td>
+					<td>justify</td>
+				</tr>
+				<tr>
+					<td>text-left</td>
+					<td>left</td>
+				</tr>
+				<tr>
+					<td>text-right</td>
+					<td>right</td>
+				</tr>
+				<tr>
+					<td>text-center</td>
+					<td>center</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+## Wrap(#css-text-wrap)
+
+Text Wrap Utilities set the `white-space` property.
+
+<div class="sheet-example">
+	<div class="table-responsive">
+		<table class="table table-autofit table-nowrap">
+			<thead>
+				<tr>
+					<th>Utility</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>text-wrap</td>
+					<td>normal</td>
+				</tr>
+				<tr>
+					<td>text-nowrap</td>
+					<td>nowrap</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+## Transform(#css-text-transform)
+
+Text Transform Utilities set the `text-transform` property.
+
+<div class="sheet-example">
+	<div class="table-responsive">
+		<table class="table table-autofit table-nowrap">
+			<thead>
+				<tr>
+					<th>Utility</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>text-lowercase</td>
+					<td>lowercase</td>
+				</tr>
+				<tr>
+					<td>text-uppercase</td>
+					<td>uppercase</td>
+				</tr>
+				<tr>
+					<td>text-capitalize</td>
+					<td>capitalize</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+## Miscellaneous(#css-text-misc)
+
+<div class="sheet-example">
+	<div class="table-responsive">
+		<table class="table table-autofit table-nowrap">
+			<thead>
+				<tr>
+					<th>Utility</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>text-hide</td>
+					<td>background-color: transparent;<br/>border: 0;<br/>color: transparent;<br/>font: 0/0 a;<br/>text-shadow: none;</td>
+				</tr>
+				<tr>
+					<td>text-decoration-none</td>
+					<td>text-decoration: none !important;</td>
+				</tr>
+				<tr>
+					<td>text-break</td>
+					<td>overflow-wrap: break-word !important;<br/>word-wrap: break-word !important;</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

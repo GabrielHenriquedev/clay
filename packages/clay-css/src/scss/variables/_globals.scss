@@ -35,7 +35,7 @@ $enable-grid-classes: true !default;
 $enable-pointer-cursor-for-buttons: true !default;
 $enable-print-styles: true !default;
 $enable-responsive-font-sizes: false !default;
-$enable-validation-icons: true !default;
+$enable-validation-icons: false !default;
 $enable-deprecation-messages: true !default;
 
 // Deprecated, no longer affects any compiled CSS
@@ -189,28 +189,14 @@ $spacers: () !default;
 $spacers: map-deep-merge(
 	(
 		0: 0,
-		1: (
-			$spacer * 0.25,
-		),
-		2: (
-			$spacer * 0.5,
-		),
+		1: $spacer * 0.25,
+		2: $spacer * 0.5,
 		3: $spacer,
-		4: (
-			$spacer * 1.5,
-		),
-		5: (
-			$spacer * 3,
-		),
-		6: (
-			$spacer * 4.5,
-		),
-		7: (
-			$spacer * 6,
-		),
-		8: (
-			$spacer * 7.5,
-		),
+		4: $spacer * 1.5,
+		5: $spacer * 3,
+		6: $spacer * 4.5,
+		7: $spacer * 6,
+		8: $spacer * 7.5,
 	),
 	$spacers
 );
@@ -243,7 +229,7 @@ $border-radius-sm: 0.2rem !default;
 
 $rounded-border-radius: $border-radius !default;
 $rounded-circle-border-radius: 5000px !default;
-$rounded-0-border-radius: 0 !default;
+$rounded-0-border-radius: 0px !default;
 $rounded-pill: 50rem !default;
 
 $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
@@ -304,6 +290,30 @@ $grid-row-columns: 6 !default;
 
 // Containers
 
+$clay-container: () !default;
+$clay-container: map-merge(
+	(
+		margin-left: auto,
+		margin-right: auto,
+		padding-left: calc(#{$grid-gutter-width} * 0.5),
+		padding-right: calc(#{$grid-gutter-width} * 0.5),
+		width: 100%,
+	),
+	$clay-container
+);
+
+$clay-container-fluid: () !default;
+$clay-container-fluid: map-merge(
+	(
+		margin-left: auto,
+		margin-right: auto,
+		padding-left: calc(#{$grid-gutter-width} * 0.5),
+		padding-right: calc(#{$grid-gutter-width} * 0.5),
+		width: 100%,
+	),
+	$clay-container-fluid
+);
+
 $container-max-widths: (
 	sm: 540px,
 	md: 720px,
@@ -350,9 +360,27 @@ $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
 
 $font-family-base: $font-family-sans-serif !default;
 
-$font-size-base: 1rem !default;
-$font-size-lg: $font-size-base * 1.25 !default;
-$font-size-sm: $font-size-base * 0.875 !default;
+$font-scale: () !default;
+$font-scale: map-merge(
+	(
+		1: 0.625rem,
+		2: 0.75rem,
+		3: 0.875rem,
+		4: 1rem,
+		5: 1.125rem,
+		6: 1.25rem,
+		7: 1.5rem,
+		8: 1.75rem,
+		9: 2rem,
+		10: 2.25rem,
+		11: 2.5rem,
+	),
+	$font-scale
+);
+
+$font-size-base: map-get($font-scale, 4) !default;
+$font-size-lg: map-get($font-scale, 6) !default;
+$font-size-sm: map-get($font-scale, 3) !default;
 
 $font-size-base-mobile: $font-size-base !default;
 $font-size-lg-mobile: $font-size-lg !default;
@@ -370,7 +398,7 @@ $line-height-base: 1.5 !default;
 
 // h1, .h1
 
-$h1-font-size: $font-size-base * 2.5 !default;
+$h1-font-size: calc(#{$font-size-base} * 2.5) !default;
 $h1-font-size-mobile: null !default;
 
 $h1: () !default;
@@ -388,7 +416,7 @@ $h1: map-deep-merge(
 
 // h2, .h2
 
-$h2-font-size: $font-size-base * 2 !default;
+$h2-font-size: calc(#{$font-size-base} * 2) !default;
 $h2-font-size-mobile: null !default;
 
 $h2: () !default;
@@ -406,7 +434,7 @@ $h2: map-deep-merge(
 
 // h3, .h3
 
-$h3-font-size: $font-size-base * 1.75 !default;
+$h3-font-size: calc(#{$font-size-base} * 1.75) !default;
 $h3-font-size-mobile: null !default;
 
 $h3: () !default;
@@ -424,7 +452,7 @@ $h3: map-deep-merge(
 
 // h4, .h4
 
-$h4-font-size: $font-size-base * 1.5 !default;
+$h4-font-size: calc(#{$font-size-base} * 1.5) !default;
 $h4-font-size-mobile: null !default;
 
 $h4: () !default;
@@ -442,7 +470,7 @@ $h4: map-deep-merge(
 
 // h5, .h5
 
-$h5-font-size: $font-size-base * 1.25 !default;
+$h5-font-size: calc(#{$font-size-base} * 1.25) !default;
 $h5-font-size-mobile: null !default;
 
 $h5: () !default;
@@ -478,7 +506,7 @@ $h6: map-deep-merge(
 
 // Headings h1-h6
 
-$headings-margin-bottom: $spacer * 0.5 !default;
+$headings-margin-bottom: 0.5rem !default;
 $headings-font-family: null !default;
 $headings-font-weight: 500 !default;
 $headings-line-height: 1.2 !default;
@@ -626,7 +654,7 @@ $display-4: map-deep-merge(
 	$display-4
 );
 
-$lead-font-size: $font-size-base * 1.25 !default;
+$lead-font-size: calc(#{$font-size-base} * 1.25) !default;
 $lead-font-weight: 300 !default;
 
 $small-font-size: 80% !default;
@@ -635,7 +663,7 @@ $text-muted: $gray-600 !default;
 
 $blockquote-small-color: $gray-600 !default;
 $blockquote-small-font-size: $small-font-size !default;
-$blockquote-font-size: $font-size-base * 1.25 !default;
+$blockquote-font-size: calc(#{$font-size-base} * 1.25) !default;
 
 $hr-border-color: rgba($black, 0.1) !default;
 $hr-border-width: $border-width !default;

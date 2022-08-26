@@ -94,6 +94,9 @@ $cadmin-btn: map-deep-merge(
 		),
 		inline-item: (
 			font-size: $cadmin-btn-inline-item-font-size,
+			lexicon-icon: (
+				margin-top: 0,
+			),
 		),
 		btn-section: (
 			display: block,
@@ -187,6 +190,17 @@ $cadmin-btn-sm: map-deep-merge(
 	$cadmin-btn-sm
 );
 
+// Button Sizes
+
+$cadmin-btn-sizes: () !default;
+$cadmin-btn-sizes: map-deep-merge(
+	(
+		btn-lg: $cadmin-btn-lg,
+		btn-sm: $cadmin-btn-sm,
+	),
+	$cadmin-btn-sizes
+);
+
 // Button Monospaced
 
 $cadmin-btn-monospaced-padding-x: 0 !default;
@@ -216,6 +230,9 @@ $cadmin-btn-monospaced: map-deep-merge(
 		mobile: (
 			height: $cadmin-btn-monospaced-size-mobile,
 			width: $cadmin-btn-monospaced-size-mobile,
+		),
+		lexicon-icon: (
+			margin-top: 0,
 		),
 		c-inner: (
 			align-items: center,
@@ -278,6 +295,18 @@ $cadmin-btn-monospaced-sm: map-deep-merge(
 		),
 	),
 	$cadmin-btn-monospaced-sm
+);
+
+// Button Monospaced Sizes
+
+$cadmin-btn-monospaced-sizes: () !default;
+$cadmin-btn-monospaced-sizes: map-deep-merge(
+	(
+		btn-monospaced: $cadmin-btn-monospaced,
+		btn-monospaced-lg: $cadmin-btn-monospaced-lg,
+		btn-monospaced-sm: $cadmin-btn-monospaced-sm,
+	),
+	$cadmin-btn-monospaced-sizes
 );
 
 // Button Block
@@ -350,7 +379,6 @@ $cadmin-btn-primary: map-deep-merge(
 			border-color: $cadmin-primary,
 			color: color-yiq($cadmin-primary),
 		),
-		loading-animation: 'loading-animation-light',
 	),
 	$cadmin-btn-primary
 );
@@ -421,7 +449,6 @@ $cadmin-btn-success: map-deep-merge(
 			border-color: $cadmin-success,
 			color: color-yiq($cadmin-success),
 		),
-		loading-animation: 'loading-animation-light',
 	),
 	$cadmin-btn-success
 );
@@ -457,7 +484,6 @@ $cadmin-btn-info: map-deep-merge(
 			border-color: $cadmin-info,
 			color: color-yiq($cadmin-info),
 		),
-		loading-animation: 'loading-animation-light',
 	),
 	$cadmin-btn-info
 );
@@ -494,7 +520,6 @@ $cadmin-btn-warning: map-deep-merge(
 			border-color: $cadmin-warning,
 			color: color-yiq($cadmin-warning),
 		),
-		loading-animation: 'loading-animation-light',
 	),
 	$cadmin-btn-warning
 );
@@ -530,7 +555,6 @@ $cadmin-btn-danger: map-deep-merge(
 			border-color: $cadmin-danger,
 			color: color-yiq($cadmin-danger),
 		),
-		loading-animation: 'loading-animation-light',
 	),
 	$cadmin-btn-danger
 );
@@ -601,7 +625,6 @@ $cadmin-btn-dark: map-deep-merge(
 			border-color: $cadmin-dark,
 			color: color-yiq($cadmin-dark),
 		),
-		loading-animation: 'loading-animation-light',
 	),
 	$cadmin-btn-dark
 );

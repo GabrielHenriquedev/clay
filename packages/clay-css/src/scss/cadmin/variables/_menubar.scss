@@ -73,11 +73,11 @@ $cadmin-menubar-vertical-transparent-md: map-deep-merge(
 			box-shadow 0.15s ease-in-out},
 			color: $cadmin-gray-600,
 			hover: (
-				background-color: rgba($cadmin-gray-900, 0.03),
+				background-color: rgba($cadmin-primary, 0.04),
 				color: $cadmin-gray-900,
 			),
 			focus: (
-				background-color: rgba($cadmin-gray-900, 0.03),
+				background-color: rgba($cadmin-primary, 0.04),
 				box-shadow:
 					clay-enable-shadows(
 						$cadmin-component-focus-inset-box-shadow
@@ -89,8 +89,8 @@ $cadmin-menubar-vertical-transparent-md: map-deep-merge(
 				color: rgba($cadmin-black, 0.9),
 			),
 			active-class: (
-				background-color: $cadmin-primary-l3,
-				color: $cadmin-primary,
+				background-color: rgba($cadmin-primary, 0.06),
+				color: $cadmin-gray-900,
 				font-weight: $cadmin-font-weight-semi-bold,
 			),
 			disabled: (
@@ -98,7 +98,7 @@ $cadmin-menubar-vertical-transparent-md: map-deep-merge(
 				color: rgba($cadmin-black, 0.3),
 			),
 			show: (
-				background-color: $cadmin-c-unset,
+				background-color: c-unset,
 				color: $cadmin-gray-900,
 				font-weight: $cadmin-font-weight-semi-bold,
 			),
@@ -107,16 +107,15 @@ $cadmin-menubar-vertical-transparent-md: map-deep-merge(
 			border-radius: clay-enable-rounded(0),
 			color: $cadmin-gray-900,
 			hover: (
-				background-color: $cadmin-gray-100,
-				color: clay-darken($cadmin-gray-900, 5%),
+				background-color: rgba($cadmin-primary, 0.04),
+				color: $cadmin-gray-900,
 			),
 			focus: (
-				background-color:
-					clay-lighten($cadmin-component-active-bg, 44.9),
+				background-color: rgba($cadmin-primary, 0.04),
 			),
 			active-class: (
-				background-color: $cadmin-primary-l3,
-				color: $cadmin-primary,
+				background-color: rgba($cadmin-primary, 0.06),
+				color: $cadmin-gray-900,
 				font-weight: $cadmin-font-weight-semi-bold,
 			),
 			disabled: (
@@ -124,9 +123,9 @@ $cadmin-menubar-vertical-transparent-md: map-deep-merge(
 				color: $cadmin-gray-600,
 			),
 			show: (
-				background-color: $cadmin-c-unset,
-				color: $cadmin-c-unset,
-				font-weight: $cadmin-c-unset,
+				background-color: c-unset,
+				color: c-unset,
+				font-weight: c-unset,
 			),
 		),
 		collapse-mobile: (
@@ -286,11 +285,11 @@ $cadmin-menubar-vertical-transparent-lg: map-deep-merge(
 			box-shadow 0.15s ease-in-out},
 			color: $cadmin-gray-600,
 			hover: (
-				background-color: rgba($cadmin-gray-900, 0.03),
+				background-color: rgba($cadmin-primary, 0.04),
 				color: $cadmin-gray-900,
 			),
 			focus: (
-				background-color: rgba($cadmin-gray-900, 0.03),
+				background-color: rgba($cadmin-primary, 0.04),
 				box-shadow:
 					clay-enable-shadows(
 						$cadmin-component-focus-inset-box-shadow
@@ -302,8 +301,8 @@ $cadmin-menubar-vertical-transparent-lg: map-deep-merge(
 				color: rgba($cadmin-black, 0.9),
 			),
 			active-class: (
-				background-color: $cadmin-primary-l3,
-				color: $cadmin-primary,
+				background-color: rgba($cadmin-primary, 0.06),
+				color: $cadmin-gray-900,
 				font-weight: $cadmin-font-weight-semi-bold,
 			),
 			disabled: (
@@ -311,7 +310,7 @@ $cadmin-menubar-vertical-transparent-lg: map-deep-merge(
 				color: rgba($cadmin-black, 0.3),
 			),
 			show: (
-				background-color: $cadmin-c-unset,
+				background-color: c-unset,
 				color: $cadmin-gray-900,
 				font-weight: $cadmin-font-weight-semi-bold,
 			),
@@ -320,16 +319,15 @@ $cadmin-menubar-vertical-transparent-lg: map-deep-merge(
 			border-radius: clay-enable-rounded(0),
 			color: $cadmin-gray-900,
 			hover: (
-				background-color: $cadmin-gray-100,
-				color: clay-darken($cadmin-gray-900, 5%),
+				background-color: rgba($cadmin-primary, 0.04),
+				color: $cadmin-gray-900,
 			),
 			focus: (
-				background-color:
-					clay-lighten($cadmin-component-active-bg, 44.9),
+				background-color: rgba($cadmin-primary, 0.04),
 			),
 			active-class: (
-				background-color: $cadmin-primary-l3,
-				color: $cadmin-primary,
+				background-color: rgba($cadmin-primary, 0.06),
+				color: $cadmin-gray-900,
 				font-weight: $cadmin-font-weight-semi-bold,
 			),
 			disabled: (
@@ -337,9 +335,9 @@ $cadmin-menubar-vertical-transparent-lg: map-deep-merge(
 				color: $cadmin-gray-600,
 			),
 			show: (
-				background-color: $cadmin-c-unset,
-				color: $cadmin-c-unset,
-				font-weight: $cadmin-c-unset,
+				background-color: c-unset,
+				color: c-unset,
+				font-weight: c-unset,
 			),
 		),
 		collapse-mobile: (

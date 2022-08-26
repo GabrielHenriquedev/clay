@@ -6,11 +6,18 @@
 import classnames from 'classnames';
 import React from 'react';
 
-const ClayDropDownItemList: React.FunctionComponent<
-	React.HTMLAttributes<HTMLUListElement>
-> = ({children, className, ...otherProps}) => {
+const ClayDropDownItemList = ({
+	children,
+	className,
+	role = 'menu',
+	...otherProps
+}: React.HTMLAttributes<HTMLUListElement>) => {
 	return (
-		<ul {...otherProps} className={classnames('list-unstyled', className)}>
+		<ul
+			{...otherProps}
+			className={classnames('list-unstyled', className)}
+			role={role}
+		>
 			{children}
 		</ul>
 	);

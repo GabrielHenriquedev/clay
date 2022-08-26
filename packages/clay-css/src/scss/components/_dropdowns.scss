@@ -15,11 +15,11 @@
 	@include clay-css($dropdown-header);
 
 	@include media-breakpoint-down(map-get($dropdown-header, breakpoint-down)) {
-		@include clay-css(setter(map-get($dropdown-header, mobile), ()));
+		@include clay-css(map-get($dropdown-header, mobile));
 	}
 
 	&:first-child {
-		@include clay-css(setter(map-get($dropdown-header, first-child), ()));
+		@include clay-css(map-get($dropdown-header, first-child));
 	}
 }
 
@@ -27,9 +27,7 @@
 	@include clay-css($dropdown-subheader);
 
 	&:first-child {
-		@include clay-css(
-			setter(map-get($dropdown-subheader, first-child), ())
-		);
+		@include clay-css(map-get($dropdown-subheader, first-child));
 	}
 }
 
@@ -62,41 +60,30 @@
 
 	.form-group + .form-group {
 		@include clay-css(
-			setter(map-deep-get($dropdown-section, form-group, form-group), ())
+			map-deep-get($dropdown-section, form-group, form-group)
 		);
 	}
 
 	.custom-control {
-		@include clay-css(
-			setter(map-get($dropdown-section, custom-control), ())
-		);
+		@include clay-css(map-get($dropdown-section, custom-control));
 	}
 
 	.custom-control-label {
-		@include clay-css(
-			setter(map-get($dropdown-section, custom-control-label), ())
-		);
+		@include clay-css(map-get($dropdown-section, custom-control-label));
 	}
 
 	.custom-control-label-text {
 		@include clay-css(
-			setter(map-get($dropdown-section, custom-control-label-text), ())
+			map-get($dropdown-section, custom-control-label-text)
 		);
 	}
 
 	&.active {
-		@include clay-css(setter(map-get($dropdown-section, active), ()));
+		@include clay-css(map-get($dropdown-section, active));
 
 		.custom-control-label {
 			@include clay-css(
-				setter(
-					map-deep-get(
-						$dropdown-section,
-						active,
-						custom-control-label
-					),
-					()
-				)
+				map-deep-get($dropdown-section, active, custom-control-label)
 			);
 		}
 	}
@@ -112,34 +99,6 @@
 
 .dropdown-menu {
 	@include clay-dropdown-menu-variant($dropdown-menu);
-
-	.alert {
-		font-size: $dropdown-alert-font-size;
-		line-height: $dropdown-alert-line-height;
-		margin: $dropdown-alert-margin;
-		padding: $dropdown-alert-padding-y $dropdown-alert-padding-x;
-
-		&:first-child {
-			margin-top: 0;
-		}
-
-		&:last-child {
-			margin-bottom: 0;
-		}
-	}
-
-	.alert-fluid {
-		margin-left: 0;
-		margin-right: 0;
-
-		&:first-child {
-			margin-top: math-sign($dropdown-padding-y);
-		}
-
-		&:last-child {
-			margin-bottom: math-sign($dropdown-padding-y);
-		}
-	}
 
 	.form-group {
 		margin-bottom: 0;
@@ -253,7 +212,7 @@
 
 	> .dropdown-toggle {
 		@include clay-button-variant(
-			setter(map-get($dropdown-action, dropdown-toggle), ())
+			map-get($dropdown-action, dropdown-toggle)
 		);
 	}
 }
@@ -279,17 +238,21 @@
 	.dropdown-subheader,
 	.dropdown-caption,
 	.dropdown-item {
-		padding-left: $dropdown-item-padding-x + $dropdown-item-indicator-size +
-			$dropdown-item-indicator-spacer-x;
+		padding-left: calc(
+			#{$dropdown-item-padding-x} + #{$dropdown-item-indicator-size} + #{$dropdown-item-indicator-spacer-x}
+		);
 	}
 
 	@if ($enable-c-inner) {
 		.dropdown-item {
 			.c-inner {
-				margin-left: math-sign(
-					$dropdown-item-padding-x +
-						$dropdown-item-indicator-size +
-						$dropdown-item-indicator-spacer-x
+				margin-left: calc(
+					(
+							#{$dropdown-item-padding-x} +
+								#{$dropdown-item-indicator-size} +
+								#{$dropdown-item-indicator-spacer-x}
+						) *
+						-1
 				);
 			}
 		}
@@ -320,15 +283,19 @@
 	}
 
 	.dropdown-item {
-		padding-right: $dropdown-item-padding-x + $dropdown-item-indicator-size +
-			$dropdown-item-indicator-spacer-x;
+		padding-right: calc(
+			#{$dropdown-item-padding-x} + #{$dropdown-item-indicator-size} + #{$dropdown-item-indicator-spacer-x}
+		);
 
 		@if ($enable-c-inner) {
 			.c-inner {
-				margin-right: math-sign(
-					$dropdown-item-padding-x +
-						$dropdown-item-indicator-size +
-						$dropdown-item-indicator-spacer-x
+				margin-right: calc(
+					(
+							#{$dropdown-item-padding-x} +
+								#{$dropdown-item-indicator-size} +
+								#{$dropdown-item-indicator-spacer-x}
+						) *
+						-1
 				);
 			}
 		}

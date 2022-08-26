@@ -22,33 +22,23 @@ label {
 	@include clay-css($input-label);
 
 	@include clay-scale-component {
-		$mobile: setter(map-get($input-label, mobile), ());
-
-		@include clay-css($mobile);
+		@include clay-css(map-get($input-label, mobile));
 	}
 
 	&.focus {
-		$focus: setter(map-get($input-label, focus), ());
-
-		@include clay-css($focus);
+		@include clay-css(map-get($input-label, focus));
 	}
 
 	&[for] {
-		$for: setter(map-get($input-label, for), ());
-
-		@include clay-css($for);
+		@include clay-css(map-get($input-label, for));
 	}
 
 	+ .form-text {
-		$form-text: setter(map-get($input-label, form-text), ());
-
-		@include clay-css($form-text);
+		@include clay-css(map-get($input-label, form-text));
 	}
 
 	.reference-mark {
-		$reference-mark: setter(map-get($input-label, reference-mark), ());
-
-		@include clay-css($reference-mark);
+		@include clay-css(map-get($input-label, reference-mark));
 	}
 }
 
@@ -66,9 +56,7 @@ label {
 
 fieldset[disabled] label,
 label.disabled {
-	$disabled: setter(map-get($input-label, disabled), ());
-
-	@include clay-css($disabled);
+	@include clay-css(map-get($input-label, disabled));
 }
 
 fieldset[disabled] label {
@@ -84,9 +72,7 @@ fieldset[disabled] label {
 	@include clay-form-control-variant($input);
 
 	@include clay-scale-component {
-		$mobile: setter(map-get($input, mobile), ());
-
-		@include clay-css($mobile);
+		@include clay-css(map-get($input, mobile));
 	}
 
 	// Removes inner shadow on inputs in iOS. Bootstrap 4 uses
@@ -125,9 +111,7 @@ fieldset[disabled] label {
 // This adds disabled styles to div.form-control inside a disabled fielset.
 
 fieldset[disabled] .form-control {
-	$disabled: setter(map-get($input, disabled), ());
-
-	@include clay-css($disabled);
+	@include clay-css(map-get($input, disabled));
 }
 
 // Readonly controls as plain text
@@ -280,15 +264,11 @@ select.form-control {
 	@include clay-css($form-control-select);
 
 	&:hover {
-		$hover: setter(map-get($form-control-select, hover), ());
-
-		@include clay-css($hover);
+		@include clay-css(map-get($form-control-select, hover));
 	}
 
 	&:focus {
-		$focus: setter(map-get($form-control-select, focus), ());
-
-		@include clay-css($focus);
+		@include clay-css(map-get($form-control-select, focus));
 	}
 }
 
@@ -305,8 +285,7 @@ select.form-control[multiple] {
 textarea.form-control,
 textarea.form-control-plaintext,
 .form-control.form-control-textarea {
-	height: $input-textarea-height;
-	resize: vertical;
+	@include clay-form-control-variant($input-textarea);
 }
 
 // File
@@ -445,23 +424,14 @@ textarea.form-control-plaintext,
 // Bootstrap 4 @extend .form-control-lg; work around
 
 %clay-form-control-lg {
-	@include border-radius($input-border-radius-lg);
-
-	font-size: $input-font-size-lg;
-	height: $input-height-lg;
-	padding-bottom: $input-padding-y-lg;
-	padding-left: $input-padding-x-lg;
-	padding-right: $input-padding-x-lg;
-	padding-top: $input-padding-y-lg;
-
-	@include clay-scale-component {
-		height: $input-height-lg-mobile;
-	}
+	@include clay-form-control-variant($input-lg);
 }
 
 .form-control-lg {
 	@extend %clay-form-control-lg;
 }
+
+// Select Lg
 
 %clay-select-form-control-lg {
 	height: $input-height-lg;
@@ -471,66 +441,34 @@ textarea.form-control-plaintext,
 	}
 }
 
+// Textarea Lg
+
 %clay-textarea-form-control-lg {
-	height: $input-textarea-height-lg;
+	@include clay-form-control-variant($input-textarea-lg);
 }
 
 textarea.form-control-lg,
 .form-control-lg.form-control-textarea {
-	height: $input-textarea-height-lg;
-}
-
-// Form control sizing
-// Build on `.form-control` with modifier classes to decrease or increase the
-// height and font-size of form controls.
-// Repeated in `_input_group.scss` to avoid Sass extend issues.
-
-.form-control-sm {
-	@include border-radius($input-border-radius-sm);
-
-	font-size: $input-font-size-sm;
-	height: $input-height-sm;
-	line-height: $input-line-height-sm;
-	padding: $input-padding-y-sm $input-padding-x-sm;
-}
-
-.form-control-lg {
-	@include border-radius($input-border-radius-lg);
-
-	font-size: $input-font-size-lg;
-	height: $input-height-lg;
-	line-height: $input-line-height-lg;
-	padding: $input-padding-y-lg $input-padding-x-lg;
+	@extend %clay-textarea-form-control-lg !optional;
 }
 
 // Bootstrap 4 @extend .form-control-sm; work around
 
 %clay-form-control-sm {
-	@include border-radius($input-border-radius-sm);
-
-	font-size: $input-font-size-sm;
-	height: $input-height-sm;
-	padding-bottom: $input-padding-y-sm;
-	padding-left: $input-padding-x-sm;
-	padding-right: $input-padding-x-sm;
-	padding-top: $input-padding-y-sm;
-
-	@include clay-scale-component {
-		height: $input-height-sm-mobile;
-	}
+	@include clay-form-control-variant($input-sm);
 }
 
 .form-control-sm {
-	@extend %clay-form-control-sm;
+	@extend %clay-form-control-sm !optional;
 }
 
+// Select Sm
+
 %clay-select-form-control-sm {
-	@include clay-css(setter($form-control-select-sm, ()));
+	@include clay-form-control-variant($form-control-select-sm);
 
 	@include clay-scale-component {
-		$mobile: setter(map-get($form-control-select-sm, mobile));
-
-		@include clay-css($mobile);
+		@include clay-css(map-get($form-control-select-sm, mobile));
 	}
 }
 
@@ -538,13 +476,25 @@ textarea.form-control-lg,
 	@extend %clay-select-form-control-sm !optional;
 }
 
+// Textarea Sm
+
 %clay-textarea-form-control-sm {
-	height: $input-textarea-height-sm;
+	@include clay-form-control-variant($input-textarea-sm);
 }
 
 textarea.form-control-sm,
 .form-control-sm.form-control-textarea {
-	height: $input-textarea-height-sm;
+	@extend %clay-textarea-form-control-sm !optional;
+}
+
+// .form-control-tag-group-sm
+
+%clay-form-control-tag-group-sm {
+	@include clay-form-control-variant($form-control-tag-group-sm);
+}
+
+.form-control-tag-group-sm.form-control {
+	@extend %clay-form-control-tag-group-sm;
 }
 
 // Fieldset
@@ -553,50 +503,33 @@ textarea.form-control-sm,
 	@include clay-css($form-fieldset);
 
 	&[disabled] {
-		@include clay-css(setter(map-get($form-fieldset, disabled), ()));
+		@include clay-css(map-get($form-fieldset, disabled));
 
 		label {
-			@include clay-css(
-				setter(map-deep-get($form-fieldset, disabled, label), ())
-			);
+			@include clay-css(map-deep-get($form-fieldset, disabled, label));
 
 			.form-control {
 				@include clay-css(
-					setter(
-						map-deep-get(
-							$form-fieldset,
-							disabled,
-							label,
-							form-control
-						),
-						()
-					)
+					map-deep-get($form-fieldset, disabled, label, form-control)
 				);
 			}
 		}
 
 		.form-control-label-text {
 			@include clay-css(
-				setter(
-					map-deep-get(
-						$form-fieldset,
-						disabled,
-						form-control-label-text
-					),
-					()
-				)
+				map-deep-get($form-fieldset, disabled, form-control-label-text)
 			);
 		}
 
 		.form-legend {
 			@include clay-css(
-				setter(map-deep-get($form-fieldset, disabled, form-legend), ())
+				map-deep-get($form-fieldset, disabled, form-legend)
 			);
 		}
 
 		.form-control {
 			@include clay-css(
-				setter(map-deep-get($form-fieldset, disabled, form-control), ())
+				map-deep-get($form-fieldset, disabled, form-control)
 			);
 		}
 	}

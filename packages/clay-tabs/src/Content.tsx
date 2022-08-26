@@ -6,7 +6,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Receives a number that indicates the `tabkey` to be rendered.
 	 */
@@ -23,7 +23,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	fade?: boolean;
 }
 
-const Content: React.FunctionComponent<IProps> = ({
+const Content = ({
 	activeIndex = 0,
 	children,
 	className,

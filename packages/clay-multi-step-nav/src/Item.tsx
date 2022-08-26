@@ -6,7 +6,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface IProps extends React.HTMLAttributes<HTMLLIElement> {
+export interface IProps extends React.HTMLAttributes<HTMLLIElement> {
 	/**
 	 * Flag to indicate if `active` classname should be applied
 	 */
@@ -28,7 +28,7 @@ interface IProps extends React.HTMLAttributes<HTMLLIElement> {
 	expand?: boolean;
 }
 
-const ClayMultiStepNavItem: React.FunctionComponent<IProps> = ({
+const ClayMultiStepNavItem = ({
 	active,
 	children,
 	className,

@@ -6,7 +6,7 @@
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import {
-	TInternalStateOnChange,
+	InternalDispatch,
 	setElementFullHeight,
 	useInternalState,
 } from '@clayui/shared';
@@ -20,7 +20,7 @@ import ClayPanelGroup from './Group';
 import ClayPanelHeader from './Header';
 import ClayPanelTitle from './Title';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Flag to indicate that Panel is collapsable.
 	 */
@@ -32,7 +32,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	collapseClassNames?: string;
 
 	/**
-	 * Flag to indicate the initial value of expanded.
+	 * Flag to indicate the initial value of expanded (uncontrolled).
 	 */
 	defaultExpanded?: boolean;
 
@@ -47,14 +47,14 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	displayType?: 'unstyled' | 'secondary';
 
 	/**
-	 * Determines if menu is expanded or not
+	 * Determines if menu is expanded or not (controlled).
 	 */
 	expanded?: boolean;
 
 	/**
-	 * Callback for when dropdown changes its active state
+	 * Callback for when dropdown changes its active state (controlled).
 	 */
-	onExpandedChange?: TInternalStateOnChange<boolean>;
+	onExpandedChange?: InternalDispatch<boolean>;
 
 	/**
 	 * Flag to toggle collapse icon visibility when `collapsable` is true.
@@ -67,13 +67,15 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	spritemap?: string;
 }
 
-const ClayPanel: React.FunctionComponent<IProps> & {
+function ClayPanel(props: IProps): JSX.Element & {
 	Body: typeof ClayPanelBody;
 	Footer: typeof ClayPanelFooter;
 	Group: typeof ClayPanelGroup;
 	Header: typeof ClayPanelHeader;
 	Title: typeof ClayPanelTitle;
-} = ({
+};
+
+function ClayPanel({
 	children,
 	className,
 	collapsable,
@@ -86,9 +88,12 @@ const ClayPanel: React.FunctionComponent<IProps> & {
 	showCollapseIcon = true,
 	spritemap,
 	...otherProps
-}: IProps) => {
+}: IProps) {
 	const [internalExpanded, setInternalExpanded] = useInternalState({
-		initialValue: defaultExpanded,
+		defaultName: 'defaultExpanded',
+		defaultValue: defaultExpanded,
+		handleName: 'onExpandedChange',
+		name: 'expanded',
 		onChange: onExpandedChange,
 		value: expanded,
 	});
@@ -195,7 +200,7 @@ const ClayPanel: React.FunctionComponent<IProps> & {
 			)}
 		</div>
 	);
-};
+}
 
 ClayPanel.Body = ClayPanelBody;
 ClayPanel.Group = ClayPanelGroup;

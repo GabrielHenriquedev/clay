@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.70.0](https://github.com/liferay/clay/compare/v3.69.0...v3.70.0) (2022-08-23)
+
+**Note:** Version bump only for package @clayui/tooltip
+
+# [3.69.0](https://github.com/liferay/clay/compare/v3.68.0...v3.69.0) (2022-08-16)
+
+### Bug Fixes
+
+-   **@clayui/tooltip): Revert "fix(@clayui/tooltip:** adds the option to disappear the floating tooltip after a while" ([43b64b9](https://github.com/liferay/clay/commit/43b64b9e0ca7b503b022f69f2aa710dd51770114))
+-   **@clayui/tooltip:** adds the option to disappear the floating tooltip after a while ([7438e62](https://github.com/liferay/clay/commit/7438e62797131336b6547ffd986ff977c7a59d0d))
+-   **@clayui/tooltip:** remove the behavior of moving the tooltip when the mouse moves ([51585ff](https://github.com/liferay/clay/commit/51585ffb16fe0dea68086ed9c320db381d788215))
+
+# [3.67.0](https://github.com/liferay/clay/compare/v3.66.0...v3.67.0) (2022-07-25)
+
+### Features
+
+-   **@clayui/tooltip:** adds new properties to configure the tooltip to be floating ([c598ca3](https://github.com/liferay/clay/commit/c598ca335b96cafe01848fabdf020135126c9ff9))
+
+# [3.65.0](https://github.com/liferay/clay/compare/v3.64.0...v3.65.0) (2022-07-11)
+
+### Bug Fixes
+
+-   **@clayui/tooltip:** adds the possibility to hover over the tooltip ([8b9b256](https://github.com/liferay/clay/commit/8b9b256db39be0a8f7708648946cec6faeb92bb1))
+
+# [3.58.0](https://github.com/liferay/clay/compare/v3.57.0...v3.58.0) (2022-05-23)
+
+**Note:** Version bump only for package @clayui/tooltip
+
+# [3.56.0](https://github.com/liferay/clay/compare/v3.55.0...v3.56.0) (2022-05-09)
+
+### Bug Fixes
+
+-   **@clayui/tooltip:** cancel scheduled tooltip before scheduling new one ([62551b8](https://github.com/liferay/clay/commit/62551b87af77d6b15d95d80c47525c1071237605))
+
+# [3.55.0](https://github.com/liferay/clay/compare/v3.54.0...v3.55.0) (2022-05-02)
+
+**Note:** Version bump only for package @clayui/tooltip
+
+# [3.52.0](https://github.com/liferay/clay/compare/v3.51.0...v3.52.0) (2022-04-04)
+
+**Note:** Version bump only for package @clayui/tooltip
+
+# [3.49.0](https://github.com/liferay/clay/compare/v3.48.0...v3.49.0) (2022-03-15)
+
+**Note:** Version bump only for package @clayui/tooltip
+
 # [3.47.0](https://github.com/liferay/clay/compare/v3.46.0...v3.47.0) (2022-02-23)
 
 **Note:** Version bump only for package @clayui/tooltip

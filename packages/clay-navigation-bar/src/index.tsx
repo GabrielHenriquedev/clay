@@ -14,7 +14,7 @@ import warning from 'warning';
 
 import Item from './Item';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Children elements received from ClayNavigationBar component.
 	 */
@@ -38,16 +38,18 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	triggerLabel: string;
 }
 
-const ClayNavigationBar: React.FunctionComponent<IProps> & {
+function ClayNavigationBar(props: IProps): JSX.Element & {
 	Item: typeof Item;
-} = ({
+};
+
+function ClayNavigationBar({
 	children,
 	className,
 	inverted = false,
 	spritemap,
 	triggerLabel,
 	...otherProps
-}: IProps) => {
+}: IProps) {
 	const [expanded, setExpanded] = React.useState(false);
 
 	const activeElementsCount = React.Children.map(
@@ -128,7 +130,7 @@ const ClayNavigationBar: React.FunctionComponent<IProps> & {
 			</ClayLayout.ContainerFluid>
 		</nav>
 	);
-};
+}
 
 ClayNavigationBar.Item = Item;
 

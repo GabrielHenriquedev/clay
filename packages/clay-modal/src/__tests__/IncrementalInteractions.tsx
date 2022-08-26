@@ -18,11 +18,11 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	children?: any;
 }
 
-const ModalWithState: React.FunctionComponent<IProps> = ({
+const ModalWithState = ({
 	children,
 	initialVisible = false,
 	...props
-}) => {
+}: IProps) => {
 	const [visible, setVisible] = React.useState(initialVisible);
 	const {observer} = useModal({onClose: () => setVisible(false)});
 
@@ -34,6 +34,19 @@ const ModalWithState: React.FunctionComponent<IProps> = ({
 				</ClayModal>
 			)}
 			<Button aria-label="button" onClick={() => setVisible(true)}>
+				Foo
+			</Button>
+		</>
+	);
+};
+
+const ModalWithHookState = () => {
+	const {observer, onOpenChange, open} = useModal();
+
+	return (
+		<>
+			{open && <ClayModal observer={observer} spritemap={spritemap} />}
+			<Button aria-label="button" onClick={() => onOpenChange(true)}>
 				Foo
 			</Button>
 		</>
@@ -62,6 +75,22 @@ describe('Modal -> IncrementalInteractions', () => {
 
 	it('open the modal', () => {
 		const {container, getByLabelText} = render(<ModalWithState />);
+
+		expect(document.body.classList).not.toContain('modal-open');
+
+		fireEvent.click(getByLabelText('button'), {});
+
+		expect(document.body.classList).toContain('modal-open');
+		expect(
+			container.querySelector('.modal-backdrop.fade.show')
+		).toBeDefined();
+		expect(
+			container.querySelector('.fade.modal.d-block.show')
+		).toBeDefined();
+	});
+
+	it('open the modal with useModal state', () => {
+		const {container, getByLabelText} = render(<ModalWithHookState />);
 
 		expect(document.body.classList).not.toContain('modal-open');
 
@@ -253,6 +282,47 @@ describe('ModalProvider -> IncrementalInteractions', () => {
 
 	afterAll(() => {
 		jest.useRealTimers();
+	});
+
+	it('will not render modal title and footer when not providing it', () => {
+		const ModalWithProvider = () => {
+			const [, dispatch] = React.useContext(Context);
+
+			return (
+				<Button
+					data-testid="button"
+					displayType="primary"
+					onClick={() =>
+						dispatch({
+							payload: {
+								body: <h1>Hello world!</h1>,
+								size: 'lg',
+							},
+							type: 1,
+						})
+					}
+				>
+					Open modal
+				</Button>
+			);
+		};
+
+		const {getByTestId} = render(
+			<ClayModalProvider spritemap={spritemap}>
+				<ModalWithProvider />
+			</ClayModalProvider>
+		);
+
+		const button = getByTestId('button');
+
+		fireEvent.click(button, {});
+
+		act(() => {
+			jest.runAllTimers();
+		});
+
+		expect(document.querySelector('modal-header')).toBeNull();
+		expect(document.querySelector('modal-footer')).toBeNull();
 	});
 
 	it('renders a modal when dispatching Open by provider', () => {

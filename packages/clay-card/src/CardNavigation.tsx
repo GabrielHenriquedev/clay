@@ -9,18 +9,18 @@ import React from 'react';
 
 import Context, {IContext} from './Context';
 
-interface IProps
+export interface IProps
 	extends Omit<IContext, 'interactive'>,
 		React.BaseHTMLAttributes<HTMLAnchorElement | HTMLDivElement> {}
 
-export const ClayCardNavigation: React.FunctionComponent<IProps> = ({
+export const ClayCardNavigation = ({
 	children,
 	className,
 	horizontal,
 	href,
 	onClick,
 	...otherProps
-}) => {
+}: IProps) => {
 	const Container = href ? ClayLink : 'div';
 
 	return (

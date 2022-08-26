@@ -11,7 +11,7 @@ import ClayMultiStepNavIndicator from './Indicator';
 import ClayMultiStepNavItem from './Item';
 import ClayMultiStepNavTitle from './Title';
 
-interface IProps extends React.HTMLAttributes<HTMLOListElement> {
+export interface IProps extends React.HTMLAttributes<HTMLOListElement> {
 	/**
 	 * Flag to indicate if nav should add `multi-step-nav-collapse-sm` class
 	 */
@@ -28,19 +28,21 @@ interface IProps extends React.HTMLAttributes<HTMLOListElement> {
 	indicatorLabel?: 'bottom' | 'top';
 }
 
-const ClayMultiStepNav: React.FunctionComponent<IProps> & {
+function ClayMultiStepNav(props: IProps): JSX.Element & {
 	Divider: typeof ClayMultiStepNavDivider;
 	Indicator: typeof ClayMultiStepNavIndicator;
 	Item: typeof ClayMultiStepNavItem;
 	Title: typeof ClayMultiStepNavTitle;
-} = ({
+};
+
+function ClayMultiStepNav({
 	autoCollapse = true,
 	children,
 	className,
 	fixedWidth,
 	indicatorLabel = 'bottom',
 	...otherProps
-}: IProps) => {
+}: IProps) {
 	return (
 		<ol
 			className={classNames('multi-step-nav', className, {
@@ -54,7 +56,7 @@ const ClayMultiStepNav: React.FunctionComponent<IProps> & {
 			{children}
 		</ol>
 	);
-};
+}
 
 ClayMultiStepNav.Divider = ClayMultiStepNavDivider;
 ClayMultiStepNav.Indicator = ClayMultiStepNavIndicator;

@@ -15,6 +15,11 @@ export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	alignElementRef?: React.RefObject<HTMLElement>;
 
 	/**
+	 * Flag to align the DropDown menu within the viewport.
+	 */
+	alignmentByViewport?: boolean;
+
+	/**
 	 * Flag to indicate if menu is showing or not.
 	 */
 	active?: boolean;
@@ -32,9 +37,10 @@ export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	onSetActive?: (val: boolean) => void;
 }
 
-const ClayAutocompleteDropDown: React.FunctionComponent<IProps> = ({
+const ClayAutocompleteDropDown = ({
 	active = false,
 	alignElementRef,
+	alignmentByViewport,
 	children,
 	closeOnClickOutside,
 	onSetActive = () => {},
@@ -53,10 +59,11 @@ const ClayAutocompleteDropDown: React.FunctionComponent<IProps> = ({
 		<ClayDropDown.Menu
 			active={active}
 			alignElementRef={alignElementRef}
-			autoBestAlign={false}
+			alignmentByViewport={alignmentByViewport}
+			autoBestAlign={!!alignmentByViewport}
 			className="autocomplete-dropdown-menu"
 			closeOnClickOutside={closeOnClickOutside}
-			onSetActive={onSetActive}
+			onActiveChange={onSetActive}
 			ref={menuElementRef}
 			style={{
 				maxWidth: 'none',

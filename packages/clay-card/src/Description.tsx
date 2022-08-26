@@ -9,7 +9,7 @@ import React from 'react';
 
 type CardDescriptionDisplayType = 'text' | 'title' | 'subtitle';
 
-interface ICardDescriptionProps
+export interface ICardDescriptionProps
 	extends React.HTMLAttributes<
 		HTMLHeadingElement | HTMLDivElement | HTMLSpanElement
 	> {
@@ -39,7 +39,7 @@ interface ICardDescriptionProps
 	truncate?: boolean;
 }
 
-const ClayCardDescription: React.FunctionComponent<ICardDescriptionProps> = ({
+const ClayCardDescription = ({
 	children,
 	className,
 	disabled,

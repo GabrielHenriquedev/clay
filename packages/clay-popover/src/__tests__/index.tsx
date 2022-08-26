@@ -36,7 +36,22 @@ describe('ClayPopover', () => {
 
 	it('renders with `show`', () => {
 		const {container} = render(
-			<ClayPopover header="Popover" show>
+			<ClayPopover defaultShow header="Popover">
+				{`Viennese flavour cup eu, percolator froth ristretto mazagran
+					caffeine. White roast seasonal, mocha trifecta, dripper caffeine
+					spoon acerbic to go macchiato strong.`}
+			</ClayPopover>
+		);
+
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders with trigger', () => {
+		const {container} = render(
+			<ClayPopover
+				header="Popover"
+				trigger={<button type="button">Logo</button>}
+			>
 				{`Viennese flavour cup eu, percolator froth ristretto mazagran
 					caffeine. White roast seasonal, mocha trifecta, dripper caffeine
 					spoon acerbic to go macchiato strong.`}

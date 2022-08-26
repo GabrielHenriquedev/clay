@@ -118,12 +118,15 @@ $cadmin-input-plaintext-color: $cadmin-body-color !default;
 
 // Deprecated
 
-$cadmin-input-height-border: $cadmin-input-border-bottom-width +
-	$cadmin-input-border-top-width !default;
+$cadmin-input-height-border: calc(
+	#{$cadmin-input-border-bottom-width} + #{$cadmin-input-border-top-width}
+) !default;
 
 // Deprecated
 
-$cadmin-input-height-inner: $cadmin-input-height - $cadmin-input-height-border !default;
+$cadmin-input-height-inner: calc(
+	#{$cadmin-input-height} - #{$cadmin-input-border-bottom-width} - #{$cadmin-input-border-top-width}
+) !default;
 
 // Deprecated
 
@@ -194,6 +197,7 @@ $cadmin-input-label: map-deep-merge(
 		font-weight: $cadmin-input-label-font-weight,
 		margin-bottom: $cadmin-input-label-margin-bottom,
 		max-width: 100%,
+		position: static,
 		word-wrap: break-word,
 		mobile: (
 			font-size: $cadmin-input-label-font-size-mobile,
@@ -318,20 +322,21 @@ $cadmin-form-control-label-size: () !default;
 $cadmin-form-control-label-size: map-deep-merge(
 	(
 		border-width: 1px,
-		font-size: map-get($cadmin-label-lg, font-size),
+		font-size: 12px,
 		height: auto,
 		margin-bottom: 5px,
 		margin-right: 10px,
 		margin-top: 5px,
 		min-height: 24px,
-		padding-x: map-get($cadmin-label-lg, padding-x),
-		padding-y: map-get($cadmin-label-lg, padding-y),
+		padding-bottom: 5px,
+		padding-left: 8px,
+		padding-right: 8px,
+		padding-top: 5px,
 		text-transform: none,
-		item-spacer-y: map-get($cadmin-label-lg, item-spacer-y),
-		lexicon-icon-height: map-get($cadmin-label-lg, lexicon-icon-height),
-		lexicon-icon-width: map-get($cadmin-label-lg, lexicon-icon-width),
-		sticker-size: map-get($cadmin-label-lg, sticker-size),
-		close: map-get($cadmin-label-lg, close),
+		label-item: (
+			margin-bottom: -1px,
+			margin-top: -1px,
+		),
 	),
 	$cadmin-form-control-label-size
 );
@@ -363,6 +368,7 @@ $cadmin-form-control-inset: map-deep-merge(
 		color: $cadmin-input-color,
 		flex-grow: 1,
 		margin-bottom: $cadmin-form-control-inset-margin-y,
+		margin-left: 8px,
 		margin-top: $cadmin-form-control-inset-margin-y,
 		min-height: $cadmin-form-control-inset-min-height,
 		padding: 0,
@@ -390,6 +396,7 @@ $cadmin-form-control-tag-group: map-deep-merge(
 		flex-wrap: wrap,
 		height: auto,
 		padding-bottom: $cadmin-form-control-tag-group-padding-y,
+		padding-left: 8px,
 		padding-right: 8px,
 		padding-top: $cadmin-form-control-tag-group-padding-y,
 	),
@@ -475,6 +482,38 @@ $cadmin-form-control-tag-group-component-action: map-deep-merge(
 	$cadmin-form-control-tag-group-component-action
 );
 
+// .form-control-tag-group-sm.form-control
+
+$cadmin-form-control-tag-group-sm: () !default;
+$cadmin-form-control-tag-group-sm: map-deep-merge(
+	(
+		border-radius: clay-enable-rounded($cadmin-input-border-radius-sm),
+		font-size: $cadmin-input-font-size-sm,
+		height: auto,
+		line-height: $cadmin-input-line-height-sm,
+		min-height: $cadmin-input-height-sm,
+		padding-bottom: 0,
+		padding-left: 4px,
+		padding-right: 4px,
+		padding-top: 0,
+		inline-item: (
+			margin-bottom: 0,
+			margin-top: 0,
+		),
+		label: (
+			margin-bottom: 3px,
+			margin-right: 4px,
+			margin-top: 3px,
+		),
+		form-control-inset: (
+			margin-bottom: 2px,
+			margin-left: 8px,
+			margin-top: 3px,
+		),
+	),
+	$cadmin-form-control-tag-group-sm
+);
+
 // Form Group
 
 $cadmin-form-group-margin-bottom: 24px !default; // 24px
@@ -547,9 +586,9 @@ $cadmin-form-text: map-merge(
 
 // .form-feedback-item
 
-$cadmin-form-feedback-font-size: 0.875rem !default;
+$cadmin-form-feedback-font-size: 14px !default;
 $cadmin-form-feedback-font-weight: $cadmin-font-weight-semi-bold !default;
-$cadmin-form-feedback-margin-top: 0.25rem !default;
+$cadmin-form-feedback-margin-top: 4px !default;
 
 $cadmin-form-feedback-item: () !default;
 $cadmin-form-feedback-item: map-merge(
@@ -1236,7 +1275,7 @@ $cadmin-input-select-size: map-deep-merge(
 				),
 			),
 			option: (
-				padding: 0.40625rem 0.5rem,
+				padding: 6.5px 8px,
 			),
 		),
 	),
@@ -1696,25 +1735,6 @@ $cadmin-input-group-sm: map-deep-merge(
 		input-group-item: (
 			btn: $cadmin-input-group-sm-item-btn,
 			btn-monospaced: $cadmin-input-group-sm-item-btn-monospaced,
-			form-control: (
-				border-radius:
-					clay-enable-rounded($cadmin-input-border-radius-sm),
-				font-size: $cadmin-input-font-size-sm,
-				height: $cadmin-input-height-sm,
-				line-height: $cadmin-input-line-height-sm,
-				padding-bottom: $cadmin-input-padding-y-sm,
-				padding-left: $cadmin-input-padding-x-sm,
-				padding-right: $cadmin-input-padding-x-sm,
-				padding-top: $cadmin-input-padding-y-sm,
-				label: (
-					margin-bottom: 0.1875rem,
-					margin-top: 0.1875rem,
-				),
-			),
-			form-control-inset: (
-				margin-bottom: 0.125rem,
-				margin-top: 0.1875rem,
-			),
 			form-file: (
 				btn: (
 					border-radius:

@@ -1,6 +1,6 @@
 {
 	"name": "@clayui/date-picker",
-	"version": "3.47.0",
+	"version": "3.70.0",
 	"description": "ClayDatePicker component",
 	"license": "BSD-3-Clause",
 	"repository": "https://github.com/liferay/clay",
@@ -13,8 +13,8 @@
 	],
 	"scripts": {
 		"build": "cross-env NODE_ENV=production babel src --root-mode upward --out-dir lib --extensions .ts,.tsx",
-		"build:types": "cross-env NODE_ENV=production tsc --project ./tsconfig.declarations.json",
-		"prepublishOnly": "yarn build && yarn build:types",
+		"buildTypes": "cross-env NODE_ENV=production tsc --project ./tsconfig.declarations.json",
+		"prepublishOnly": "yarn build && yarn buildTypes",
 		"test": "jest --config ../../jest.config.js"
 	},
 	"keywords": [
@@ -22,12 +22,12 @@
 		"react"
 	],
 	"dependencies": {
-		"@clayui/button": "^3.40.0",
-		"@clayui/drop-down": "^3.47.0",
-		"@clayui/form": "^3.47.0",
-		"@clayui/icon": "^3.40.0",
-		"@clayui/shared": "^3.47.0",
-		"@clayui/time-picker": "^3.47.0",
+		"@clayui/button": "^3.65.0",
+		"@clayui/drop-down": "^3.70.0",
+		"@clayui/form": "^3.70.0",
+		"@clayui/icon": "^3.56.0",
+		"@clayui/shared": "^3.70.0",
+		"@clayui/time-picker": "^3.70.0",
 		"classnames": "^2.2.6",
 		"date-fns": "^2.14.0"
 	},

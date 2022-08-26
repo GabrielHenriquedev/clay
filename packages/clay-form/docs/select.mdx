@@ -1,0 +1,34 @@
+---
+title: 'Select'
+description: 'A form control element used to select from several provided options and enter data.'
+lexiconDefinition: 'https://liferay.design/lexicon/core-components/forms/selector/'
+packageNpm: '@clayui/form'
+navigationParent: 'docs/components/form.html'
+storybookPath: 'design-system-components-select'
+---
+
+import {Select, SelectWithOption} from '$packages/clay-form/docs/select';
+
+<div class="nav-toc-absolute">
+<div class="nav-toc">
+
+-   [SelectWithOption](#selectwithoption)
+
+</div>
+</div>
+
+## Introduction
+
+`ClaySelect` and `ClaySelect.Option` are `<select>` and `<option>` elements respectivetly that are styled using ClayCSS classes.
+
+`ClaySelect` represents a control that provides a menu of options (`ClaySelect.Option`). `ClaySelect.Option` defines an option in a select list.
+
+Use `ClaySelect.Option` for wrapping an option item.
+
+<Select />
+
+## SelectWithOption
+
+If you use ClaySelect only for simple cases that do not need props for [`options`](#api-options), you can use `<ClaySelectWithOption />` which will have the same result as the previous version.
+
+<SelectWithOption />

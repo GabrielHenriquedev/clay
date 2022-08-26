@@ -4,7 +4,7 @@
  */
 
 import {useInternalState} from '@clayui/shared';
-import {Key, useCallback, useRef} from 'react';
+import {Key, useCallback, useMemo, useRef} from 'react';
 
 import {getKey} from './Collection';
 import {ITreeProps, createImmutableTree} from './useTree';
@@ -12,6 +12,11 @@ import {ITreeProps, createImmutableTree} from './useTree';
 import type {ICollectionProps} from './Collection';
 
 export interface IMultipleSelection {
+	/**
+	 * Property to set the initial value of `selectedKeys`.
+	 */
+	defaultSelectedKeys?: Set<Key>;
+
 	/**
 	 * Handler that is called when the selection changes.
 	 */
@@ -115,11 +120,54 @@ export function useMultipleSelection<T>(
 
 	const intermediateKeys = useRef(new Set<Key>());
 
-	const [selectedKeys, setSelectionKeys] = useInternalState<Set<Key>>({
-		initialValue: props.selectedKeys ?? new Set(),
+	const [selectedKeys, setSelectionKeys, isUncontrolled] = useInternalState<
+		Set<Key>
+	>({
+		defaultName: 'defaultSelectedKeys',
+		defaultValue: props.defaultSelectedKeys ?? new Set(),
+		handleName: 'onSelectionChange',
+		name: 'selectedKeys',
 		onChange: props.onSelectionChange,
 		value: props.selectedKeys,
 	});
+
+	/**
+	 * We are using `useMemo` to do intermediate state revalidation in the
+	 * render cycle instead of in the `useEffect` which happens after rendering.
+	 */
+	useMemo(() => {
+		if (props.selectionMode === 'multiple-recursive' && !isUncontrolled) {
+			const intermediates = Array.from(intermediateKeys.current);
+
+			intermediateKeys.current = new Set(
+				intermediates.filter((key) => {
+					const keyMap = layoutKeys.current.get(key) as LayoutInfo;
+
+					const children = [...keyMap.children];
+
+					const unselected = children.some(
+						(key) => !selectedKeys.has(key)
+					);
+
+					if (unselected) {
+						if (
+							children.some(
+								(key) =>
+									selectedKeys.has(key) ||
+									intermediateKeys.current.has(key)
+							)
+						) {
+							return true;
+						} else {
+							return false;
+						}
+					} else {
+						return false;
+					}
+				})
+			);
+		}
+	}, [selectedKeys]);
 
 	/**
 	 * The method creates the mirror of the tree in a hashmap structure with a
@@ -237,9 +285,15 @@ export function useMultipleSelection<T>(
 
 				if (unselected) {
 					// An item can only be intermediate when there is at least
-					// one item selected in its tree. We don't need to sweep
-					// the tree because we have the recursive effect.
-					if (children.some((key) => selecteds.has(key))) {
+					// one selected or intermediate item in its tree. We don't need
+					// to sweep the tree because we have the recursive effect.
+					if (
+						children.some(
+							(key) =>
+								selecteds.has(key) ||
+								intermediateKeys.current.has(key)
+						)
+					) {
 						intermediateKeys.current.add(keyMap.parentKey);
 					} else {
 						intermediateKeys.current.delete(keyMap.parentKey);
@@ -361,16 +415,15 @@ export function useMultipleSelection<T>(
 
 					const keyMap = layoutKeys.current.get(key) as LayoutInfo;
 
-					// Resets the intermediate state because the element will be selected
-					// or otherwise the state must be false because it will be unchecking
-					// all its children.
-					intermediateKeys.current.delete(key);
-
 					if (selecteds.has(key)) {
 						selecteds.delete(key);
-					} else {
+					} else if (!intermediateKeys.current.has(key)) {
 						selecteds.add(key);
 					}
+
+					// Resets the intermediate state because its selected state
+					// will change.
+					intermediateKeys.current.delete(key);
 
 					toggleChildrenSelection(
 						keyMap,

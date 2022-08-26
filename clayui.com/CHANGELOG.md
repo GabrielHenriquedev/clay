@@ -3,6 +3,120 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.70.1](https://github.com/liferay/clay/compare/v3.70.0...v3.70.1) (2022-08-24)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.70.0](https://github.com/liferay/clay/compare/v3.69.0...v3.70.0) (2022-08-23)
+
+### Features
+
+-   **clayui.com:** improves the readability of descriptions in the API table and the style ([6fe889d](https://github.com/liferay/clay/commit/6fe889da77235b1cda485dafa6e7e9e9fcdf2799))
+
+# [3.69.0](https://github.com/liferay/clay/compare/v3.68.0...v3.69.0) (2022-08-16)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.68.0](https://github.com/liferay/clay/compare/v3.67.0...v3.68.0) (2022-08-01)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.67.0](https://github.com/liferay/clay/compare/v3.66.0...v3.67.0) (2022-07-25)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.66.0](https://github.com/matuzalemsteles/clay/compare/v3.65.2...v3.66.0) (2022-07-20)
+
+**Note:** Version bump only for package clayui.com
+
+## [3.65.2](https://github.com/liferay/clay/compare/v3.65.1...v3.65.2) (2022-07-19)
+
+**Note:** Version bump only for package clayui.com
+
+## [3.65.1](https://github.com/liferay/clay/compare/v3.65.0...v3.65.1) (2022-07-11)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.65.0](https://github.com/liferay/clay/compare/v3.64.0...v3.65.0) (2022-07-11)
+
+### Bug Fixes
+
+-   **clayui.com:** fix clipboard error in examples ([3ad788b](https://github.com/liferay/clay/commit/3ad788b5ae3a34ae1375097c371b58e629d3490c))
+
+# [3.64.0](https://github.com/liferay/clay/compare/v3.63.0...v3.64.0) (2022-07-04)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.63.0](https://github.com/liferay/clay/compare/v3.62.0...v3.63.0) (2022-06-27)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.62.0](https://github.com/liferay/clay/compare/v3.61.0...v3.62.0) (2022-06-20)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.61.0](https://github.com/liferay/clay/compare/v3.60.1...v3.61.0) (2022-06-13)
+
+**Note:** Version bump only for package clayui.com
+
+## [3.60.1](https://github.com/liferay/clay/compare/v3.60.0...v3.60.1) (2022-06-08)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.60.0](https://github.com/liferay/clay/compare/v3.59.0...v3.60.0) (2022-06-06)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.59.0](https://github.com/liferay/clay/compare/v3.58.1...v3.59.0) (2022-05-30)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.58.0](https://github.com/liferay/clay/compare/v3.57.0...v3.58.0) (2022-05-23)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.57.0](https://github.com/liferay/clay/compare/v3.56.0...v3.57.0) (2022-05-16)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.56.0](https://github.com/liferay/clay/compare/v3.55.0...v3.56.0) (2022-05-09)
+
+### Features
+
+-   **clayui.com:** add deprecated prop badge to doc ([0d55bdf](https://github.com/liferay/clay/commit/0d55bdfc4f56d584d2838645476e604d520889d6))
+
+# [3.55.0](https://github.com/liferay/clay/compare/v3.54.0...v3.55.0) (2022-05-02)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.54.0](https://github.com/liferay/clay/compare/v3.53.0...v3.54.0) (2022-04-25)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.53.0](https://github.com/liferay/clay/compare/v3.52.0...v3.53.0) (2022-04-12)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.52.0](https://github.com/liferay/clay/compare/v3.51.0...v3.52.0) (2022-04-04)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.51.0](https://github.com/liferay/clay/compare/v3.50.0...v3.51.0) (2022-03-28)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.50.0](https://github.com/liferay/clay/compare/v3.49.0...v3.50.0) (2022-03-21)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.49.0](https://github.com/julien/clay/compare/v3.48.0...v3.49.0) (2022-03-15)
+
+**Note:** Version bump only for package clayui.com
+
+# [3.48.0](https://github.com/julien/clay/compare/v3.47.0...v3.48.0) (2022-03-07)
+
+**Note:** Version bump only for package clayui.com
+
 # [3.47.0](https://github.com/julien/clay/compare/v3.46.0...v3.47.0) (2022-02-23)
 
 ### Bug Fixes

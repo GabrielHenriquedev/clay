@@ -22,45 +22,35 @@ interface IEllipsisProps extends React.HTMLAttributes<HTMLLIElement> {
 	spritemap?: string;
 }
 
-const Ellipsis: React.FunctionComponent<IEllipsisProps> = ({
-	items,
-	spritemap,
-	...otherProps
-}) => {
-	const [active, setActive] = React.useState(false);
-
-	return (
-		<ClayDropDown
-			active={active}
-			className="breadcrumb-item"
-			containerElement="li"
-			onActiveChange={(newVal) => setActive(newVal)}
-			trigger={
-				<ClayButton
-					className="breadcrumb-link"
-					data-testid="breadcrumbDropdownTrigger"
-					displayType="unstyled"
+const Ellipsis = ({items, spritemap, ...otherProps}: IEllipsisProps) => (
+	<ClayDropDown
+		className="breadcrumb-item"
+		containerElement="li"
+		trigger={
+			<ClayButton
+				className="breadcrumb-link"
+				data-testid="breadcrumbDropdownTrigger"
+				displayType="unstyled"
+			>
+				<ClayIcon spritemap={spritemap} symbol="ellipsis-h" />
+				<ClayIcon spritemap={spritemap} symbol="caret-bottom" />
+			</ClayButton>
+		}
+		{...otherProps}
+	>
+		<ClayDropDown.ItemList>
+			{items.map(({href, label, onClick}, i) => (
+				<ClayDropDown.Item
+					href={href}
+					key={`breadcrumbEllipsisItem${i}`}
+					onClick={onClick}
+					title={label}
 				>
-					<ClayIcon spritemap={spritemap} symbol="ellipsis-h" />
-					<ClayIcon spritemap={spritemap} symbol="caret-bottom" />
-				</ClayButton>
-			}
-			{...otherProps}
-		>
-			<ClayDropDown.ItemList>
-				{items.map(({href, label, onClick}, i) => (
-					<ClayDropDown.Item
-						href={href}
-						key={`breadcrumbEllipsisItem${i}`}
-						onClick={onClick}
-						title={label}
-					>
-						{label}
-					</ClayDropDown.Item>
-				))}
-			</ClayDropDown.ItemList>
-		</ClayDropDown>
-	);
-};
+					{label}
+				</ClayDropDown.Item>
+			))}
+		</ClayDropDown.ItemList>
+	</ClayDropDown>
+);
 
 export default Ellipsis;
